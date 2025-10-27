@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Header } from './components/Header.jsx';
 import { SetList } from './components/SetList.jsx';
 import { QuickImport } from './components/QuickImport.jsx';
@@ -70,6 +70,29 @@ function downloadSetAsJson(set) {
   URL.revokeObjectURL(url);
 }
 
+function Sheet({ title, description, open, onClose, children }) {
+  if (!open) {
+    return null;
+  }
+  return (
+    <div className="sheet" role="dialog" aria-modal="true">
+      <div className="sheet__backdrop" onClick={onClose} aria-hidden="true" />
+      <section className="sheet__panel stack">
+        <header className="sheet__header">
+          <div>
+            <h2 className="sheet__title">{title}</h2>
+            {description ? <p className="muted small">{description}</p> : null}
+          </div>
+          <button type="button" className="button ghost" onClick={onClose}>
+            Close
+          </button>
+        </header>
+        <div className="sheet__content">{children}</div>
+      </section>
+    </div>
+  );
+}
+
 export default function App() {
   const { toggleTheme } = useTheme();
   const { addToast } = useToast();
@@ -77,6 +100,8 @@ export default function App() {
 
   const [activeTab, setActiveTab] = useState('edit');
   const [draft, setDraft] = useState(createEmptyDraft);
+  const [libraryOpen, setLibraryOpen] = useState(false);
+  const [quickAddOpen, setQuickAddOpen] = useState(false);
 
   const savedSets = useMemo(
     () =>
@@ -85,6 +110,17 @@ export default function App() {
   );
 
   const practiceItems = useMemo(() => cleanItems(draft.items), [draft.items]);
+
+  useEffect(() => {
+    const handleKey = (event) => {
+      if (event.key === 'Escape') {
+        setLibraryOpen(false);
+        setQuickAddOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
   const handleNewSet = () => {
     setCurrentId(null);
@@ -247,20 +283,14 @@ export default function App() {
   };
 
   return (
-    <div className="app">
-      <Header onToggleTheme={toggleTheme} onNewSet={handleNewSet} />
-      <aside className="side">
-        <SetList
-          sets={savedSets}
-          currentId={currentId}
-          onLoad={handleLoadSet}
-          onRename={handleRenameSet}
-          onDelete={handleDeleteSet}
-        />
-        <div className="hr" />
-        <QuickImport onImport={handleQuickImport} />
-      </aside>
-      <main className="main">
+    <div className="app-shell">
+      <Header
+        onToggleTheme={toggleTheme}
+        onNewSet={handleNewSet}
+        onOpenLibrary={() => setLibraryOpen(true)}
+        onOpenQuickAdd={() => setQuickAddOpen(true)}
+      />
+      <div className="workspace">
         <div className="tabbar" role="tablist" aria-label="Modes">
           {tabs.map((tab) => (
             <button
@@ -275,24 +305,53 @@ export default function App() {
             </button>
           ))}
         </div>
-        <EditTab
-          draft={draft}
-          onChangeTitle={handleChangeTitle}
-          onChangeItem={handleChangeItem}
-          onAddRow={handleAddRow}
-          onRemoveRow={handleRemoveRow}
-          onShuffleRows={handleShuffleRows}
-          onClearRows={handleClearRows}
-          onSave={handleSave}
-          onExport={handleExport}
-          onImportSet={handleImportSet}
-          isActive={activeTab === 'edit'}
+        <section className="workspace-panels">
+          <EditTab
+            draft={draft}
+            onChangeTitle={handleChangeTitle}
+            onChangeItem={handleChangeItem}
+            onAddRow={handleAddRow}
+            onRemoveRow={handleRemoveRow}
+            onShuffleRows={handleShuffleRows}
+            onClearRows={handleClearRows}
+            onSave={handleSave}
+            onExport={handleExport}
+            onImportSet={handleImportSet}
+            isActive={activeTab === 'edit'}
+          />
+          <MatchTab items={practiceItems} isActive={activeTab === 'match'} />
+          <MultipleChoiceTab items={practiceItems} isActive={activeTab === 'mc'} />
+          <FlashcardsTab items={practiceItems} isActive={activeTab === 'flash'} />
+        </section>
+      </div>
+      <Sheet
+        open={libraryOpen}
+        onClose={() => setLibraryOpen(false)}
+        title="Set Library"
+        description="Open, rename, or remove saved collections."
+      >
+        <SetList
+          sets={savedSets}
+          currentId={currentId}
+          onLoad={(id) => {
+            handleLoadSet(id);
+            setLibraryOpen(false);
+          }}
+          onRename={handleRenameSet}
+          onDelete={handleDeleteSet}
         />
-        <MatchTab items={practiceItems} isActive={activeTab === 'match'} />
-        <MultipleChoiceTab items={practiceItems} isActive={activeTab === 'mc'} />
-        <FlashcardsTab items={practiceItems} isActive={activeTab === 'flash'} />
-      </main>
+      </Sheet>
+      <Sheet
+        open={quickAddOpen}
+        onClose={() => setQuickAddOpen(false)}
+        title="Quick Add"
+        description="Paste terms to append them to the current set."
+      >
+        <QuickImport
+          onImport={handleQuickImport}
+          onAfterImport={() => setQuickAddOpen(false)}
+        />
+      </Sheet>
     </div>
   );
 }
-

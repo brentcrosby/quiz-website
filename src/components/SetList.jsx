@@ -1,30 +1,36 @@
 export function SetList({ sets, onLoad, onRename, onDelete, currentId }) {
   return (
-    <section className="stack">
-      <div className="side-header">
-        <strong>My Sets</strong>
+    <section className="library stack" aria-live="polite">
+      <div className="library-header">
+        <div>
+          <strong>Saved Sets</strong>
+          <p className="muted small">
+            {sets.length ? 'Choose a set to load or manage its details.' : 'You have no saved sets yet.'}
+          </p>
+        </div>
         <span className="pill">{sets.length}</span>
       </div>
-      <div className="set-list" role="list">
-        {sets.length === 0 ? (
-          <p className="empty-state">
-            No saved sets yet. Click <strong>New Set</strong> or use Quick Import to get started.
-          </p>
-        ) : (
-          sets.map((set) => (
-            <article
+      {sets.length === 0 ? (
+        <p className="empty-state">
+          Click <strong>New Set</strong> or use Quick Add to build your first collection.
+        </p>
+      ) : (
+        <ul className="library-list">
+          {sets.map((set) => (
+            <li
               key={set.id}
-              className="set-card"
-              aria-current={currentId === set.id ? 'true' : undefined}
+              className={`library-item ${currentId === set.id ? 'is-active' : ''}`}
             >
-              <div>
-                <strong>{set.title}</strong>
-                <div className="muted small">{set.items.length} items</div>
-              </div>
-              <div className="inline">
-                <button type="button" className="button secondary" onClick={() => onLoad(set.id)}>
-                  Open
-                </button>
+              <button
+                type="button"
+                className="library-item__primary"
+                aria-current={currentId === set.id ? 'true' : undefined}
+                onClick={() => onLoad(set.id)}
+              >
+                <span className="library-item__title">{set.title}</span>
+                <span className="library-item__meta">{set.items.length} items</span>
+              </button>
+              <div className="library-item__actions">
                 <button type="button" className="button ghost" onClick={() => onRename(set.id)}>
                   Rename
                 </button>
@@ -32,11 +38,10 @@ export function SetList({ sets, onLoad, onRename, onDelete, currentId }) {
                   Delete
                 </button>
               </div>
-            </article>
-          ))
-        )}
-      </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }
-
