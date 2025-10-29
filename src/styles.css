@@ -674,15 +674,39 @@ textarea {
   display: grid;
   gap: 20px;
   justify-items: center;
+  width: min(520px, 100%);
+  margin: 0 auto;
 }
 
 .flash-options {
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
   width: min(520px, 100%);
   margin: 0 auto;
+  gap: 16px;
+}
+
+.flash-options__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.flash-options__row span {
+  margin-left: auto;
+}
+
+.flash-options__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+.flash-options__actions .button {
+  flex: 1 1 160px;
+  width: 100%;
 }
 
 .flash-card {
@@ -694,7 +718,7 @@ textarea {
   align-items: center;
   justify-content: center;
   aspect-ratio: 3 / 2;
-  width: min(520px, 100%);
+  width: 100%;
   text-align: center;
   cursor: pointer;
   border: 1px solid var(--border);
@@ -853,10 +877,62 @@ textarea {
 }
 
 .flash-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
+  display: grid;
+  width: 100%;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+}
+
+.flash-controls .button {
+  width: 100%;
+}
+
+@media (max-width: 560px) {
+  .flash-card {
+    padding: clamp(20px, 6vw, 28px);
+    border-radius: 16px;
+    aspect-ratio: auto;
+    min-height: 220px;
+  }
+
+  .flash-term {
+    font-size: clamp(1.2rem, 4.5vw, 1.6rem);
+  }
+
+  .flash-def {
+    font-size: clamp(0.95rem, 4vw, 1.05rem);
+  }
+
+  .flash-options__row {
+    justify-content: flex-start;
+  }
+
+  .flash-options__row span {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .flash-wrap {
+    gap: 16px;
+  }
+
+  .flash-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .flash-options__row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .flash-options__row span {
+    align-self: flex-start;
+  }
+
+  .flash-options__actions {
+    flex-direction: column;
+  }
 }
 
 .hidden {

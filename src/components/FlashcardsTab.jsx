@@ -215,8 +215,8 @@ export function FlashcardsTab({ items, isActive }) {
               </button>
             </div>
           </div>
-          <div className="card inline flash-options">
-            <div className="inline" style={{ gap: '12px', flexWrap: 'wrap' }}>
+          <div className="card flash-options">
+            <div className="flash-options__row">
               <label className="inline" style={{ gap: '6px' }}>
                 <input
                   type="checkbox"
@@ -237,7 +237,7 @@ export function FlashcardsTab({ items, isActive }) {
               <span className="muted small">{queue.length} left</span>
             </div>
             {supportsSpeech ? (
-              <div className="inline" style={{ gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <div className="flash-options__row">
                 <label className="inline" style={{ gap: '6px' }} htmlFor="flashcard-speech-rate">
                   Speed
                 </label>
@@ -257,7 +257,7 @@ export function FlashcardsTab({ items, isActive }) {
             ) : (
               <p className="muted small">Read aloud is not supported in this browser.</p>
             )}
-            <div className="inline" style={{ gap: '8px' }}>
+            <div className="flash-options__actions">
               <button type="button" className="button secondary" onClick={rebuildQueue}>
                 Shuffle
               </button>
