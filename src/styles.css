@@ -6,12 +6,13 @@
   --chip: #f3f4f6;
   --muted: #6b7280;
   --text: #111827;
-  --accent: #111827;
+  --accent: #34d399;
   --accent-contrast: #ffffff;
-  --accent-2: #2563eb;
+  --accent-2: #34d399;
+  --accent-surface: rgba(52, 211, 153, 0.12);
   --danger: #dc2626;
   --warn: #d97706;
-  --ok: #15803d;
+  --ok: #34d399;
   --border: #e5e7eb;
 }
 
@@ -23,9 +24,10 @@
   --chip: #2b2c30;
   --muted: #9ca3af;
   --text: #f9fafb;
-  --accent: #f9fafb;
-  --accent-contrast: #111113;
-  --accent-2: #93c5fd;
+  --accent: #34d399;
+  --accent-contrast: #f9fafb;
+  --accent-2: #34d399;
+  --accent-surface: rgba(52, 211, 153, 0.18);
   --danger: #fca5a5;
   --warn: #fbbf24;
   --ok: #34d399;
@@ -133,15 +135,15 @@ button:focus-visible {
 .button {
   border-radius: 12px;
   padding: 10px 16px;
-  background: var(--accent);
-  color: var(--accent-contrast);
+  background: transparent;
+  color: var(--accent);
   border: 1px solid var(--accent);
   font-weight: 600;
   letter-spacing: 0.02em;
 }
 
 .button:hover {
-  filter: brightness(0.95);
+  background: var(--accent-surface);
 }
 
 .button.secondary {
@@ -306,14 +308,14 @@ textarea {
 }
 
 .tabbar button.active {
-  background: var(--accent);
-  color: var(--accent-contrast);
+  background: var(--accent-surface);
+  color: var(--accent);
   border-color: var(--accent);
 }
 
 .tabbar button:hover {
   border-color: var(--accent);
-  color: var(--text);
+  color: var(--accent);
 }
 
 .tab-panel {
