@@ -252,6 +252,45 @@ export function FlashcardsTab({ items, isActive }) {
     touchDataRef.current = null;
   };
 
+  useEffect(() => {
+    if (!isActive) {
+      return undefined;
+    }
+    const handleKeyDown = (event) => {
+      if (event.defaultPrevented) {
+        return;
+      }
+      const target = event.target;
+      if (
+        target &&
+        (target.tagName === 'INPUT' ||
+          target.tagName === 'TEXTAREA' ||
+          target.tagName === 'SELECT' ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        handleGot();
+        return;
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        handleKeep();
+        return;
+      }
+      if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+        event.preventDefault();
+        handleFlip();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isActive, handleGot, handleKeep, handleFlip]);
+
   return (
     <section
       id="tab-flash"
