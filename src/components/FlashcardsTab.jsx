@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { shuffle } from '../utils/shuffle.js';
 
+const SWIPE_THRESHOLD = 60;
+
 export function FlashcardsTab({ items, isActive }) {
   const [queue, setQueue] = useState([]);
   const [flipped, setFlipped] = useState(false);
@@ -10,6 +12,8 @@ export function FlashcardsTab({ items, isActive }) {
   const [voice, setVoice] = useState(null);
 
   const synthRef = useRef(null);
+  const touchDataRef = useRef(null);
+  const preventClickRef = useRef(false);
   const supportsSpeech =
     typeof window !== 'undefined' &&
     'speechSynthesis' in window &&
@@ -173,6 +177,81 @@ export function FlashcardsTab({ items, isActive }) {
     speak(visibleText);
   }, [supportsSpeech, isActive, readAloudEnabled, current, flipped, front, back, speechRate, voice]);
 
+  const blockNextClick = () => {
+    preventClickRef.current = true;
+    setTimeout(() => {
+      preventClickRef.current = false;
+    }, 0);
+  };
+
+  const handleTouchStart = (event) => {
+    if (event.touches.length !== 1) {
+      touchDataRef.current = null;
+      return;
+    }
+    const touch = event.touches[0];
+    touchDataRef.current = {
+      startX: touch.clientX,
+      startY: touch.clientY,
+      moved: false
+    };
+  };
+
+  const handleTouchMove = (event) => {
+    if (!touchDataRef.current || event.touches.length !== 1) {
+      return;
+    }
+    const touch = event.touches[0];
+    const dx = touch.clientX - touchDataRef.current.startX;
+    const dy = touch.clientY - touchDataRef.current.startY;
+    if (Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+      touchDataRef.current.moved = true;
+    }
+    if (Math.abs(dx) > Math.abs(dy)) {
+      event.preventDefault();
+    }
+  };
+
+  const handleTouchEnd = (event) => {
+    if (!touchDataRef.current) {
+      return;
+    }
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - touchDataRef.current.startX;
+    const dy = touch.clientY - touchDataRef.current.startY;
+    const moved = touchDataRef.current.moved;
+    touchDataRef.current = null;
+
+    if (Math.abs(dx) >= SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+      event.preventDefault();
+      blockNextClick();
+      if (dx < 0) {
+        handleGot();
+      } else {
+        handleKeep();
+      }
+      return;
+    }
+
+    if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 30) {
+      blockNextClick();
+      return;
+    }
+
+    if (!moved || Math.abs(dx) < 20) {
+      event.preventDefault();
+      blockNextClick();
+      handleFlip();
+      return;
+    }
+
+    blockNextClick();
+  };
+
+  const handleTouchCancel = () => {
+    touchDataRef.current = null;
+  };
+
   return (
     <section
       id="tab-flash"
@@ -190,13 +269,23 @@ export function FlashcardsTab({ items, isActive }) {
               className="flash-card"
               tabIndex={0}
               role="button"
-              onClick={handleFlip}
+              onClick={() => {
+                if (preventClickRef.current) {
+                  preventClickRef.current = false;
+                  return;
+                }
+                handleFlip();
+              }}
               onKeyDown={(event) => {
                 if (event.key === 'Enter' || event.key === ' ') {
                   event.preventDefault();
                   handleFlip();
                 }
               }}
+              onTouchStart={handleTouchStart}
+              onTouchMove={handleTouchMove}
+              onTouchEnd={handleTouchEnd}
+              onTouchCancel={handleTouchCancel}
             >
               <div className="flash-term">{front}</div>
               {current && (flipped || !showTermFirst) && (
@@ -217,24 +306,36 @@ export function FlashcardsTab({ items, isActive }) {
           </div>
           <div className="card flash-options">
             <div className="flash-options__row">
-              <label className="inline" style={{ gap: '6px' }}>
-                <input
-                  type="checkbox"
-                  checked={showTermFirst}
-                  onChange={(event) => setShowTermFirst(event.target.checked)}
-                />
-                Show term first
-              </label>
-              <label className="inline" style={{ gap: '6px' }}>
-                <input
-                  type="checkbox"
-                  checked={readAloudEnabled}
-                  onChange={(event) => setReadAloudEnabled(event.target.checked)}
-                  disabled={!supportsSpeech}
-                />
-                Read aloud
-              </label>
-              <span className="muted small">{queue.length} left</span>
+              <div className="flash-toggles">
+                <label className="toggle">
+                  <span className="toggle__label">Show term first</span>
+                  <input
+                    type="checkbox"
+                    checked={showTermFirst}
+                    onChange={(event) => setShowTermFirst(event.target.checked)}
+                  />
+                  <span aria-hidden="true" className="toggle__track">
+                    <span className="toggle__thumb" />
+                  </span>
+                </label>
+                <label
+                  className="toggle"
+                  data-disabled={!supportsSpeech}
+                  aria-disabled={!supportsSpeech}
+                >
+                  <span className="toggle__label">Read aloud</span>
+                  <input
+                    type="checkbox"
+                    checked={readAloudEnabled}
+                    onChange={(event) => setReadAloudEnabled(event.target.checked)}
+                    disabled={!supportsSpeech}
+                  />
+                  <span aria-hidden="true" className="toggle__track">
+                    <span className="toggle__thumb" />
+                  </span>
+                </label>
+              </div>
+              <span className="muted small flash-queue-count">{queue.length} left</span>
             </div>
             {supportsSpeech ? (
               <div className="flash-options__row">
