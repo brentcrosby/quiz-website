@@ -220,6 +220,66 @@ button:focus-visible {
   }
 }
 
+@media (max-width: 700px) {
+  body {
+    padding: 14px;
+    justify-content: flex-start;
+  }
+
+  .app-shell {
+    gap: 16px;
+  }
+
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 16px;
+  }
+
+  .title {
+    font-size: 1.1rem;
+    white-space: normal;
+  }
+
+  .header-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    justify-content: stretch;
+  }
+
+  .header-actions button {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  .workspace {
+    padding: 16px;
+    border-radius: 18px;
+    gap: 16px;
+  }
+
+  .workspace-panels {
+    gap: 16px;
+  }
+
+  .tabbar button {
+    padding: 6px 10px;
+  }
+
+  .edit-header {
+    padding: 12px;
+    border-radius: 16px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+}
+
 .workspace {
   width: 100%;
   display: flex;
@@ -297,6 +357,13 @@ textarea {
   border-radius: 12px;
   border: 1px solid var(--border);
   background: transparent;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.tabbar::-webkit-scrollbar {
+  display: none;
 }
 
 .tabbar button {
