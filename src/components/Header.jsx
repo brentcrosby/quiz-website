@@ -1,13 +1,7 @@
 export function Header({ onToggleTheme, onNewSet, onOpenLibrary, onOpenQuickAdd }) {
   return (
     <header className="app-header">
-      <div className="header-copy">
-        <h1 className="title">Study Sets • Quiz Builder</h1>
-        <p className="subtitle">
-          Create, practice, and export flashcards. Build match activities, multiple choice quizzes,
-          and rapid-fire study cards from the same set of terms.
-        </p>
-      </div>
+      <h1 className="title">Study Sets • Quiz Builder</h1>
       <div className="header-actions">
         <button type="button" className="button ghost" onClick={onToggleTheme}>
           Theme

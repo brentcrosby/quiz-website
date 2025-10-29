@@ -80,27 +80,6 @@ export function FlashcardsTab({ items, isActive }) {
         <p className="empty-state">Add study items to flip through flashcards.</p>
       ) : (
         <>
-          <div className="card inline" style={{ justifyContent: 'space-between', gap: '12px' }}>
-            <div className="inline" style={{ gap: '12px', flexWrap: 'wrap' }}>
-              <label className="inline" style={{ gap: '6px' }}>
-                <input
-                  type="checkbox"
-                  checked={showTermFirst}
-                  onChange={(event) => setShowTermFirst(event.target.checked)}
-                />
-                Show term first
-              </label>
-              <span className="muted small">{queue.length} left</span>
-            </div>
-            <div className="inline" style={{ gap: '8px' }}>
-              <button type="button" className="button secondary" onClick={rebuildQueue}>
-                Shuffle
-              </button>
-              <button type="button" className="button ghost" onClick={rebuildQueue}>
-                Reset
-              </button>
-            </div>
-          </div>
           <div className="flash-wrap">
             <div
               className="flash-card"
@@ -131,9 +110,29 @@ export function FlashcardsTab({ items, isActive }) {
               </button>
             </div>
           </div>
+          <div className="card inline flash-options">
+            <div className="inline" style={{ gap: '12px', flexWrap: 'wrap' }}>
+              <label className="inline" style={{ gap: '6px' }}>
+                <input
+                  type="checkbox"
+                  checked={showTermFirst}
+                  onChange={(event) => setShowTermFirst(event.target.checked)}
+                />
+                Show term first
+              </label>
+              <span className="muted small">{queue.length} left</span>
+            </div>
+            <div className="inline" style={{ gap: '8px' }}>
+              <button type="button" className="button secondary" onClick={rebuildQueue}>
+                Shuffle
+              </button>
+              <button type="button" className="button ghost" onClick={rebuildQueue}>
+                Reset
+              </button>
+            </div>
+          </div>
         </>
       )}
     </section>
   );
 }
-

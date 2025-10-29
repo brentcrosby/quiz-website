@@ -85,11 +85,12 @@ button {
 
 .app-header {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   background: var(--panel);
-  padding: clamp(24px, 5vw, 32px);
-  border-radius: 24px;
+  padding: clamp(16px, 3vw, 20px) clamp(18px, 3vw, 24px);
+  border-radius: 20px;
   border: 1px solid var(--border);
 }
 
@@ -97,6 +98,8 @@ button {
   font-weight: 700;
   letter-spacing: 0.3px;
   margin: 0;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  white-space: nowrap;
 }
 
 .subtitle {
@@ -200,31 +203,17 @@ button:focus-visible {
   align-items: center;
 }
 
-.header-copy {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
 .header-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 @media (min-width: 768px) {
-  .app-header {
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-
-  .header-copy {
-    max-width: 560px;
-  }
-
-  .header-actions {
-    justify-content: flex-end;
+  .title {
+    font-size: clamp(1.3rem, 2.2vw, 1.6rem);
   }
 }
 
@@ -613,9 +602,17 @@ textarea {
 
 .flash-wrap {
   display: grid;
-  grid-template-rows: auto 1fr auto;
   gap: 20px;
   justify-items: center;
+}
+
+.flash-options {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: min(520px, 100%);
+  margin: 0 auto;
+  align-items: center;
 }
 
 .flash-card {
