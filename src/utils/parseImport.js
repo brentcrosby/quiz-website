@@ -4,22 +4,12 @@ export function parseQuickImport(text) {
     .map((line) => line.trim())
     .filter(Boolean)
     .map((line) => {
-      if (!line) {
+      const parts = line.split('::');
+      if (parts.length < 2) {
         return null;
       }
-      let term = '';
-      let def = '';
-      const csvParts = line.split(',');
-      if (csvParts.length >= 2 && !line.includes(':') && !line.includes('-')) {
-        term = csvParts.shift().trim();
-        def = csvParts.join(',').trim();
-      } else {
-        const pieces = line.split(/\s*[:\-]\s*/);
-        if (pieces.length >= 2) {
-          term = pieces.shift().trim();
-          def = pieces.join(' - ').trim();
-        }
-      }
+      const term = parts.shift().trim();
+      const def = parts.join('::').trim();
       if (!term || !def) {
         return null;
       }

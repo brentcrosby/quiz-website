@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { parseQuickImport, parsePracticeImport } from '../utils/parseImport.js';
 
-const SAMPLE_FLASHCARD_TEXT = `Locke : natural rights and consent
-Montesquieu : separation of powers
-Articles of Confederation : weak central government without taxing or commerce power`;
+const SAMPLE_FLASHCARD_TEXT = `Locke::natural rights and consent
+Montesquieu::separation of powers
+Articles of Confederation::weak central government without taxing or commerce power`;
 
 const SAMPLE_PRACTICE_TEXT = `Who wrote the Declaration of Independence?::Thomas Jefferson;;George Washington;;Benjamin Franklin;;John Adams
 The First Amendment protects free speech.::true`;
@@ -33,7 +33,7 @@ export function QuickImport({ onImport, onAfterImport, setType = 'flashcard' }) 
         </p>
       ) : (
         <p className="muted small">
-          Paste one term per line. Use <strong>:</strong> or <strong>-</strong> between the term and definition.
+          Paste one item per line. Use <strong>::</strong> between the term/question and definition/answer.
         </p>
       )}
       <textarea
@@ -57,7 +57,7 @@ export function QuickImport({ onImport, onAfterImport, setType = 'flashcard' }) 
         </div>
       ) : (
         <div className="quick-import__hint muted small">
-          CSV works too—only the first comma is used as a separator.
+          Example: <strong>Photosynthesis::process plants use to convert light into energy</strong>
         </div>
       )}
     </section>
