@@ -28,7 +28,10 @@ export function SetList({ sets, onLoad, onRename, onDelete, currentId }) {
                 onClick={() => onLoad(set.id)}
               >
                 <span className="library-item__title">{set.title}</span>
-                <span className="library-item__meta">{set.items.length} items</span>
+                <span className="library-item__meta">
+                  {set.items.length} {set.items.length === 1 ? 'item' : 'items'} ·{' '}
+                  {set.type === 'practice' ? 'Practice test' : 'Flashcards'}
+                </span>
               </button>
               <div className="library-item__actions">
                 <button type="button" className="button ghost" onClick={() => onRename(set.id)}>

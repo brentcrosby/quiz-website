@@ -6,53 +6,130 @@ import { EditTab } from './components/EditTab.jsx';
 import { MatchTab } from './components/MatchTab.jsx';
 import { MultipleChoiceTab } from './components/MultipleChoiceTab.jsx';
 import { FlashcardsTab } from './components/FlashcardsTab.jsx';
+import { PracticeTestTab } from './components/PracticeTestTab.jsx';
+import { PracticeQuickQuizTab } from './components/PracticeQuickQuizTab.jsx';
 import { useTheme } from './context/ThemeContext.jsx';
 import { useToast } from './context/ToastContext.jsx';
 import { useStudySets } from './hooks/useStudySets.js';
 import { createId } from './utils/id.js';
 import { shuffle } from './utils/shuffle.js';
 
-const tabs = [
-  { id: 'edit', label: 'Edit' },
-  { id: 'match', label: 'Match' },
-  { id: 'mc', label: 'Multiple Choice' },
-  { id: 'flash', label: 'Flashcards' }
-];
+const SET_TYPES = {
+  FLASHCARD: 'flashcard',
+  PRACTICE: 'practice'
+};
 
-const createEmptyItem = () => ({
-  id: createId('row'),
-  term: '',
-  def: ''
-});
+const TABS_BY_TYPE = {
+  [SET_TYPES.FLASHCARD]: [
+    { id: 'edit', label: 'Edit' },
+    { id: 'match', label: 'Match' },
+    { id: 'mc', label: 'Multiple Choice' },
+    { id: 'flash', label: 'Flashcards' }
+  ],
+  [SET_TYPES.PRACTICE]: [
+    { id: 'edit', label: 'Edit' },
+    { id: 'practice-test', label: 'Practice Test' },
+    { id: 'practice-quick', label: 'Quick Quiz' }
+  ]
+};
 
-const createEmptyDraft = () => ({
+const createEmptyItem = (type = SET_TYPES.FLASHCARD) => {
+  if (type === SET_TYPES.PRACTICE) {
+    return {
+      id: createId('question'),
+      prompt: '',
+      kind: 'multipleChoice',
+      correctAnswer: '',
+      distractors: ['']
+    };
+  }
+  return {
+    id: createId('row'),
+    term: '',
+    def: ''
+  };
+};
+
+const createEmptyDraft = (type = SET_TYPES.FLASHCARD) => ({
   id: null,
+  type,
   title: '',
-  items: [createEmptyItem(), createEmptyItem()]
+  items:
+    type === SET_TYPES.PRACTICE
+      ? [createEmptyItem(SET_TYPES.PRACTICE)]
+      : [createEmptyItem(), createEmptyItem()]
 });
 
-const cleanItems = (items) =>
-  items
+const cleanItems = (items, type = SET_TYPES.FLASHCARD) => {
+  if (type === SET_TYPES.PRACTICE) {
+    return items
+      .map((item) => {
+        const kind = item.kind === 'trueFalse' ? 'trueFalse' : 'multipleChoice';
+        return {
+          id: item.id ?? createId('question'),
+          prompt: item.prompt?.trim() ?? '',
+          kind,
+          correctAnswer: item.correctAnswer?.trim() ?? '',
+          distractors:
+            kind === 'multipleChoice'
+              ? (Array.isArray(item.distractors)
+                  ? item.distractors.map((value) => value?.trim()).filter(Boolean)
+                  : [])
+              : []
+        };
+      })
+      .filter((item) => {
+        if (!item.prompt || !item.correctAnswer) {
+          return false;
+        }
+        if (item.kind === 'multipleChoice') {
+          return item.distractors.length > 0;
+        }
+        return true;
+      });
+  }
+
+  return items
     .map((item) => ({
       id: item.id ?? createId('row'),
       term: item.term?.trim() ?? '',
       def: item.def?.trim() ?? ''
     }))
     .filter((item) => item.term && item.def);
+};
 
 function draftFromSet(set) {
   if (!set) {
     return createEmptyDraft();
   }
-  const items = set.items.length ? set.items : [createEmptyItem()];
+  const type = set.type === SET_TYPES.PRACTICE ? SET_TYPES.PRACTICE : SET_TYPES.FLASHCARD;
+  const items = set.items.length ? set.items : [createEmptyItem(type)];
   return {
     id: set.id ?? null,
+    type,
     title: set.title ?? '',
-    items: items.map((item) => ({
-      id: item.id ?? createId('row'),
-      term: item.term ?? '',
-      def: item.def ?? ''
-    }))
+    items:
+      type === SET_TYPES.PRACTICE
+        ? items.map((item) => ({
+            id: item.id ?? createId('question'),
+            prompt: item.prompt ?? '',
+            kind: item.kind === 'trueFalse' ? 'trueFalse' : 'multipleChoice',
+            correctAnswer: item.correctAnswer ?? '',
+            distractors:
+              item.kind === 'multipleChoice'
+                ? (() => {
+                    const list = Array.isArray(item.distractors)
+                      ? item.distractors.map((value) => value ?? '')
+                      : [];
+                    return list.length ? list : [''];
+                  })()
+                : []
+          }))
+        : items.map((item) => ({
+            id: item.id ?? createId('row'),
+            term: item.term ?? '',
+            def: item.def ?? ''
+          }))
   };
 }
 
@@ -109,7 +186,21 @@ export default function App() {
     [sets]
   );
 
-  const practiceItems = useMemo(() => cleanItems(draft.items), [draft.items]);
+  const preparedItems = useMemo(
+    () => cleanItems(draft.items, draft.type),
+    [draft.items, draft.type]
+  );
+
+  const availableTabs = useMemo(
+    () => TABS_BY_TYPE[draft.type] ?? TABS_BY_TYPE[SET_TYPES.FLASHCARD],
+    [draft.type]
+  );
+
+  useEffect(() => {
+    if (!availableTabs.some((tab) => tab.id === activeTab)) {
+      setActiveTab('edit');
+    }
+  }, [availableTabs, activeTab]);
 
   useEffect(() => {
     const handleKey = (event) => {
@@ -146,10 +237,160 @@ export default function App() {
     });
   };
 
+  const handleChangeType = (nextType) => {
+    if (nextType !== SET_TYPES.PRACTICE && nextType !== SET_TYPES.FLASHCARD) {
+      return;
+    }
+    setDraft((prev) => {
+      if (prev.type === nextType) {
+        return prev;
+      }
+      const base = createEmptyDraft(nextType);
+      return {
+        ...base,
+        id: prev.id,
+        title: prev.title
+      };
+    });
+    setActiveTab('edit');
+    addToast(
+      nextType === SET_TYPES.PRACTICE
+        ? 'Switched to practice tests mode'
+        : 'Switched to flashcards mode'
+    );
+  };
+
+  const updatePracticeItem = (index, updater) => {
+    setDraft((prev) => {
+      if (prev.type !== SET_TYPES.PRACTICE) {
+        return prev;
+      }
+      const current = prev.items[index];
+      if (!current) {
+        return prev;
+      }
+      const baseItem = {
+        id: current.id ?? createId('question'),
+        prompt: current.prompt ?? '',
+        kind: current.kind === 'trueFalse' ? 'trueFalse' : 'multipleChoice',
+        correctAnswer: current.correctAnswer ?? '',
+        distractors:
+          current.kind === 'multipleChoice'
+            ? Array.isArray(current.distractors)
+              ? current.distractors.slice()
+              : ['']
+            : []
+      };
+      const updated = updater(baseItem);
+      const sanitized =
+        updated.kind === 'trueFalse'
+          ? {
+              ...updated,
+              kind: 'trueFalse',
+              correctAnswer:
+                updated.correctAnswer?.toLowerCase() === 'false' ? 'False' : 'True',
+              distractors: []
+            }
+          : {
+              ...updated,
+              kind: 'multipleChoice',
+              distractors:
+                Array.isArray(updated.distractors) && updated.distractors.length
+                  ? updated.distractors.map((value) => value ?? '')
+                  : ['']
+            };
+      const items = prev.items.slice();
+      items[index] = sanitized;
+      return { ...prev, items };
+    });
+  };
+
+  const handleChangePracticePrompt = (index, value) => {
+    updatePracticeItem(index, (item) => ({
+      ...item,
+      prompt: value
+    }));
+  };
+
+  const handleChangePracticeKind = (index, kind) => {
+    updatePracticeItem(index, (item) => {
+      const nextKind = kind === 'trueFalse' ? 'trueFalse' : 'multipleChoice';
+      if (nextKind === 'trueFalse') {
+        return {
+          ...item,
+          kind: 'trueFalse',
+          correctAnswer:
+            item.correctAnswer?.toLowerCase() === 'false' ? 'False' : 'True',
+          distractors: []
+        };
+      }
+      return {
+        ...item,
+        kind: 'multipleChoice',
+        correctAnswer:
+          item.correctAnswer === 'True' || item.correctAnswer === 'False'
+            ? ''
+            : item.correctAnswer ?? '',
+        distractors: item.distractors?.length ? item.distractors : ['']
+      };
+    });
+  };
+
+  const handleChangePracticeCorrectAnswer = (index, value) => {
+    updatePracticeItem(index, (item) => {
+      if (item.kind === 'trueFalse') {
+        return {
+          ...item,
+          correctAnswer: value?.toLowerCase() === 'false' ? 'False' : 'True'
+        };
+      }
+      return {
+        ...item,
+        correctAnswer: value
+      };
+    });
+  };
+
+  const handleChangePracticeDistractor = (index, distractorIndex, value) => {
+    updatePracticeItem(index, (item) => {
+      const distractors = Array.isArray(item.distractors)
+        ? item.distractors.slice()
+        : [];
+      distractors[distractorIndex] = value;
+      return {
+        ...item,
+        distractors
+      };
+    });
+  };
+
+  const handleAddPracticeDistractor = (index) => {
+    updatePracticeItem(index, (item) => ({
+      ...item,
+      distractors: [...(item.distractors ?? []), '']
+    }));
+  };
+
+  const handleRemovePracticeDistractor = (index, distractorIndex) => {
+    updatePracticeItem(index, (item) => {
+      const distractors = Array.isArray(item.distractors)
+        ? item.distractors.slice()
+        : [];
+      distractors.splice(distractorIndex, 1);
+      if (!distractors.length) {
+        distractors.push('');
+      }
+      return {
+        ...item,
+        distractors
+      };
+    });
+  };
+
   const handleAddRow = () => {
     setDraft((prev) => ({
       ...prev,
-      items: [...prev.items, createEmptyItem()]
+      items: [...prev.items, createEmptyItem(prev.type)]
     }));
   };
 
@@ -158,7 +399,7 @@ export default function App() {
       const items = prev.items.slice();
       items.splice(index, 1);
       if (!items.length) {
-        items.push(createEmptyItem());
+        items.push(createEmptyItem(prev.type));
       }
       return { ...prev, items };
     });
@@ -177,7 +418,7 @@ export default function App() {
     }
     setDraft((prev) => ({
       ...prev,
-      items: [createEmptyItem()]
+      items: [createEmptyItem(prev.type)]
     }));
   };
 
@@ -186,6 +427,7 @@ export default function App() {
       const id = saveSet({
         id: draft.id,
         title: draft.title,
+        type: draft.type,
         items: draft.items
       });
       setDraft((prev) => ({
@@ -201,7 +443,8 @@ export default function App() {
   const handleExport = () => {
     const set = {
       title: draft.title.trim(),
-      items: cleanItems(draft.items)
+      type: draft.type,
+      items: cleanItems(draft.items, draft.type)
     };
     downloadSetAsJson(set);
   };
@@ -210,13 +453,14 @@ export default function App() {
     if (!data || typeof data !== 'object') {
       return;
     }
-    const items = cleanItems(data.items ?? []);
-    setCurrentId(null);
-    setDraft({
+    const importedDraft = draftFromSet({
       id: null,
+      type: data.type,
       title: data.title ?? '',
-      items: items.length ? items : [createEmptyItem()]
+      items: Array.isArray(data.items) ? data.items : []
     });
+    setCurrentId(null);
+    setDraft(importedDraft);
     addToast('Imported set from file');
   };
 
@@ -268,6 +512,28 @@ export default function App() {
     if (!items.length) {
       return;
     }
+    if (draft.type === SET_TYPES.PRACTICE) {
+      setDraft((prev) => ({
+        ...prev,
+        items: [
+          ...prev.items,
+          ...items.map((item) => ({
+            id: createId('question'),
+            prompt: item.prompt,
+            kind: item.kind === 'trueFalse' ? 'trueFalse' : 'multipleChoice',
+            correctAnswer: item.correctAnswer,
+            distractors:
+              item.kind === 'multipleChoice'
+                ? item.distractors?.length
+                  ? item.distractors
+                  : ['']
+                : []
+          }))
+        ]
+      }));
+      addToast('Added imported questions');
+      return;
+    }
     setDraft((prev) => ({
       ...prev,
       items: [
@@ -292,7 +558,7 @@ export default function App() {
       />
       <div className="workspace">
         <div className="tabbar" role="tablist" aria-label="Modes">
-          {tabs.map((tab) => (
+          {availableTabs.map((tab) => (
             <button
               key={tab.id}
               type="button"
@@ -309,7 +575,14 @@ export default function App() {
           <EditTab
             draft={draft}
             onChangeTitle={handleChangeTitle}
+            onChangeType={handleChangeType}
             onChangeItem={handleChangeItem}
+            onChangePracticePrompt={handleChangePracticePrompt}
+            onChangePracticeKind={handleChangePracticeKind}
+            onChangePracticeCorrectAnswer={handleChangePracticeCorrectAnswer}
+            onChangePracticeDistractor={handleChangePracticeDistractor}
+            onAddPracticeDistractor={handleAddPracticeDistractor}
+            onRemovePracticeDistractor={handleRemovePracticeDistractor}
             onAddRow={handleAddRow}
             onRemoveRow={handleRemoveRow}
             onShuffleRows={handleShuffleRows}
@@ -319,9 +592,18 @@ export default function App() {
             onImportSet={handleImportSet}
             isActive={activeTab === 'edit'}
           />
-          <MatchTab items={practiceItems} isActive={activeTab === 'match'} />
-          <MultipleChoiceTab items={practiceItems} isActive={activeTab === 'mc'} />
-          <FlashcardsTab items={practiceItems} isActive={activeTab === 'flash'} />
+          {draft.type === SET_TYPES.PRACTICE ? (
+            <>
+              <PracticeTestTab items={preparedItems} isActive={activeTab === 'practice-test'} />
+              <PracticeQuickQuizTab items={preparedItems} isActive={activeTab === 'practice-quick'} />
+            </>
+          ) : (
+            <>
+              <MatchTab items={preparedItems} isActive={activeTab === 'match'} />
+              <MultipleChoiceTab items={preparedItems} isActive={activeTab === 'mc'} />
+              <FlashcardsTab items={preparedItems} isActive={activeTab === 'flash'} />
+            </>
+          )}
         </section>
       </div>
       <Sheet
@@ -348,6 +630,7 @@ export default function App() {
         description="Paste terms to append them to the current set."
       >
         <QuickImport
+          setType={draft.type}
           onImport={handleQuickImport}
           onAfterImport={() => setQuickAddOpen(false)}
         />

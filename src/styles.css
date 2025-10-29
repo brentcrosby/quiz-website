@@ -229,22 +229,21 @@ button:focus-visible {
 }
 
 .workspace {
-  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 24px;
   background: var(--panel);
   border-radius: 24px;
   padding: clamp(20px, 4vw, 28px);
-  min-height: 0;
   border: 1px solid var(--border);
 }
 
 .workspace-panels {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  gap: 20px;
+  width: 100%;
 }
 
 .muted {
@@ -336,8 +335,6 @@ textarea {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  flex: 1;
-  min-height: 0;
 }
 
 .edit-tab {

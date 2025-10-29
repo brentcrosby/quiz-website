@@ -3,7 +3,46 @@ import { createId } from '../utils/id.js';
 
 const STORAGE_KEY = 'quiz-sets-v2';
 
-function sanitizeItems(items) {
+const DEFAULT_TYPE = 'flashcard';
+
+function sanitizeItems(items, type = DEFAULT_TYPE) {
+  if (type === 'practice') {
+    return items
+      .map((item) => {
+        const prompt = item.prompt?.trim() ?? '';
+        const kind = item.kind === 'trueFalse' ? 'trueFalse' : 'multipleChoice';
+        const correctAnswer = item.correctAnswer?.trim() ?? '';
+        const distractors = Array.isArray(item.distractors)
+          ? item.distractors.map((value) => value?.trim()).filter(Boolean)
+          : [];
+        if (kind === 'multipleChoice') {
+          return {
+            id: item.id ?? createId('item'),
+            prompt,
+            kind,
+            correctAnswer,
+            distractors
+          };
+        }
+        return {
+          id: item.id ?? createId('item'),
+          prompt,
+          kind,
+          correctAnswer,
+          distractors: []
+        };
+      })
+      .filter((item) => {
+        if (!item.prompt || !item.correctAnswer) {
+          return false;
+        }
+        if (item.kind === 'multipleChoice') {
+          return item.distractors.length > 0;
+        }
+        return true;
+      });
+  }
+
   return items
     .map((item) => ({
       id: item.id ?? createId('item'),
@@ -24,14 +63,18 @@ function loadInitialSets() {
     }
     const parsed = JSON.parse(raw);
     return Object.fromEntries(
-      Object.entries(parsed).map(([id, set]) => [
-        id,
-        {
+      Object.entries(parsed).map(([id, set]) => {
+        const type = set.type === 'practice' ? 'practice' : DEFAULT_TYPE;
+        return [
           id,
-          title: set.title ?? '',
-          items: sanitizeItems(set.items ?? [])
-        }
-      ])
+          {
+            id,
+            title: set.title ?? '',
+            type,
+            items: sanitizeItems(set.items ?? [], type)
+          }
+        ];
+      })
     );
   } catch (error) {
     console.warn('Failed to parse stored sets:', error);
@@ -51,14 +94,19 @@ export function useStudySets() {
   }, [sets]);
 
   const saveSet = useCallback(
-    ({ id, title, items }) => {
+    ({ id, title, type = DEFAULT_TYPE, items }) => {
       const trimmedTitle = title.trim();
       if (!trimmedTitle) {
         throw new Error('Please enter a set title');
       }
-      const entries = sanitizeItems(items);
+      const setType = type === 'practice' ? 'practice' : DEFAULT_TYPE;
+      const entries = sanitizeItems(items, setType);
       if (!entries.length) {
-        throw new Error('Add at least one term with a definition');
+        throw new Error(
+          setType === 'practice'
+            ? 'Add at least one complete practice question'
+            : 'Add at least one term with a definition'
+        );
       }
       const setId = id ?? currentId ?? createId('set');
       setSets((prev) => ({
@@ -66,6 +114,7 @@ export function useStudySets() {
         [setId]: {
           id: setId,
           title: trimmedTitle,
+          type: setType,
           items: entries
         }
       }));
