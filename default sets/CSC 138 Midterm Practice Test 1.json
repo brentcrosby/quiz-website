@@ -1,0 +1,671 @@
+{
+  "title": "CSC 138 Midterm Practice Test 1",
+  "type": "practice",
+  "items": [
+    {
+      "id": "question-mhbkxyrz-7d8qc6",
+      "prompt": "Which protocol maps an IP address to a MAC address on a local LAN?",
+      "kind": "multipleChoice",
+      "correctAnswer": "ARP",
+      "distractors": [
+        "DNS",
+        "NAT",
+        "ICMP"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-3h17id",
+      "prompt": "What transport protocol does HTTP typically use?",
+      "kind": "multipleChoice",
+      "correctAnswer": "TCP",
+      "distractors": [
+        "UDP",
+        "ICMP",
+        "SCTP"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-rx77ab",
+      "prompt": "In HTTP, which method is used to retrieve a resource without side effects?",
+      "kind": "multipleChoice",
+      "correctAnswer": "GET",
+      "distractors": [
+        "POST",
+        "PUT",
+        "DELETE"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-goev6n",
+      "prompt": "Which status code means “Moved Permanently”?",
+      "kind": "multipleChoice",
+      "correctAnswer": "301",
+      "distractors": [
+        "200",
+        "404",
+        "500"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-15jeut",
+      "prompt": "Non persistent HTTP typically requires about how many RTTs per object (ignoring transmission time)?",
+      "kind": "multipleChoice",
+      "correctAnswer": "2",
+      "distractors": [
+        "1",
+        "3",
+        "0"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-sbkdik",
+      "prompt": "What does HTTPS add to HTTP?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Encryption and authentication via TLS",
+      "distractors": [
+        "Faster routing",
+        "Lossless compression only",
+        "Alternate DNS resolution"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-fyn18w",
+      "prompt": "Which DNS record maps a name to an IPv4 address?",
+      "kind": "multipleChoice",
+      "correctAnswer": "A",
+      "distractors": [
+        "AAAA",
+        "CNAME",
+        "MX"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-psk2ms",
+      "prompt": "Which DNS query behavior has the contacted server do the work on your behalf?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Recursive",
+      "distractors": [
+        "Iterative",
+        "Authoritative",
+        "Caching-only"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-dv4sn5",
+      "prompt": "What is the purpose of DNS TTL?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Controls how long resolvers cache answers",
+      "distractors": [
+        "Sets TCP timeout",
+        "Chooses default gateway",
+        "Limits HTTP keep alive"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-8ys04l",
+      "prompt": "There are “13” logical DNS root servers that are anycast to many physical instances.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    },
+    {
+      "id": "question-mhbkxyrz-664bhz",
+      "prompt": "What does DHCP stand for?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Dynamic Host Configuration Protocol",
+      "distractors": [
+        "Domain Host Control Protocol",
+        "Dynamic Host Communication Process",
+        "Device Host Configuration Protocol"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-zeig7n",
+      "prompt": "What is the correct 4 step DHCP exchange order?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Discover",
+      "distractors": [
+        "Offer",
+        "Request",
+        "Ack",
+        "Offer",
+        "Discover",
+        "Request",
+        "Ack",
+        "Request",
+        "Offer",
+        "Discover",
+        "Ack",
+        "Ack",
+        "Request",
+        "Offer",
+        "Discover"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-n2sy84",
+      "prompt": "Which parameters can DHCP provide besides an IP address?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Subnet mask and default gateway and DNS servers",
+      "distractors": [
+        "Only MAC address",
+        "Only HTTP port",
+        "Only SSH keys"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-15i8dl",
+      "prompt": "DHCP uses broadcast at the start of the lease process.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    },
+    {
+      "id": "question-mhbkxyrz-y6zsys",
+      "prompt": "What does NAT primarily conserve?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Public IPv4 addresses",
+      "distractors": [
+        "Switch ports",
+        "MAC addresses",
+        "DNS labels"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-dn7j2c",
+      "prompt": "Which NAT variant maps many internal hosts to one public IP using ports?",
+      "kind": "multipleChoice",
+      "correctAnswer": "PAT (NAPT)",
+      "distractors": [
+        "Static NAT",
+        "1 to 1 NAT",
+        "Hairpin NAT"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-qu7yd9",
+      "prompt": "The original design goal of IPv6 was to remove the need for NAT by providing a vast address space.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    },
+    {
+      "id": "question-mhbkxyrz-lre17o",
+      "prompt": "How many bits are in an IPv6 address?",
+      "kind": "multipleChoice",
+      "correctAnswer": "128",
+      "distractors": [
+        "32",
+        "64",
+        "256"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-ikhn9y",
+      "prompt": "Which is a valid compressed form of 2001:0db8:0000:0000:0000:0000:0000:1?",
+      "kind": "multipleChoice",
+      "correctAnswer": "2001:db8::1",
+      "distractors": [
+        "2001::db8:0:0:0:0:1",
+        "2001:db8:::1",
+        "2001:db8:0:1::"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-866096",
+      "prompt": "Which address block is reserved for IPv6 documentation?",
+      "kind": "multipleChoice",
+      "correctAnswer": "2001:db8::/32",
+      "distractors": [
+        "fc00::/7",
+        "fe80::/10",
+        "ff00::/8"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-kdw6jt",
+      "prompt": "Which IPv6 address type is link local and not routed?",
+      "kind": "multipleChoice",
+      "correctAnswer": "fe80::/10",
+      "distractors": [
+        "2001::/16",
+        "ff00::/8",
+        "2002::/16"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-4tqt9b",
+      "prompt": "What is CIDR notation for a subnet with mask 255.255.255.0?",
+      "kind": "multipleChoice",
+      "correctAnswer": "/24",
+      "distractors": [
+        "/16",
+        "/25",
+        "/23"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-k1mat5",
+      "prompt": "How many usable host addresses are in a /26 IPv4 subnet?",
+      "kind": "multipleChoice",
+      "correctAnswer": "62",
+      "distractors": [
+        "64",
+        "30",
+        "126"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-uj0tf0",
+      "prompt": "The longest prefix match rule is applied during which function?",
+      "kind": "multipleChoice",
+      "correctAnswer": "IP forwarding",
+      "distractors": [
+        "DNS lookup",
+        "TCP congestion control",
+        "HTTP caching"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-d4n3gi",
+      "prompt": "ARP is used to find a router’s MAC address before sending a frame off subnet.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    },
+    {
+      "id": "question-mhbkxyrz-sxj4pl",
+      "prompt": "Which protocol reports errors like “TTL expired in transit” used by traceroute?",
+      "kind": "multipleChoice",
+      "correctAnswer": "ICMP",
+      "distractors": [
+        "ARP",
+        "SMTP",
+        "DHCP"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-dwcvrp",
+      "prompt": "Traceroute discovers path hops by manipulating which field?",
+      "kind": "multipleChoice",
+      "correctAnswer": "TTL (Hop Limit)",
+      "distractors": [
+        "Source Port",
+        "Window Size",
+        "TOS"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-xu7w8d",
+      "prompt": "Which transport protocol is connection oriented and provides ordered reliable delivery?",
+      "kind": "multipleChoice",
+      "correctAnswer": "TCP",
+      "distractors": [
+        "UDP",
+        "ICMP",
+        "ARP"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-mr4b71",
+      "prompt": "Which TCP mechanism prevents overrunning the receiver’s buffer?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Flow control with windowing",
+      "distractors": [
+        "Poisoned reverse",
+        "Split horizon",
+        "Checksum offload"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-kxxpu1",
+      "prompt": "Which TCP mechanism reduces sending rate in response to loss?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Congestion control",
+      "distractors": [
+        "Name resolution",
+        "NAT traversal",
+        "DHCP leasing"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-ml8oyi",
+      "prompt": "Which transport protocol is best for live voice where some loss is acceptable?",
+      "kind": "multipleChoice",
+      "correctAnswer": "UDP",
+      "distractors": [
+        "TCP",
+        "SCTP with full reliability",
+        "ICMP"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-cwencd",
+      "prompt": "In socket APIs, what identifies the receiving application for TCP or UDP?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Port number",
+      "distractors": [
+        "MAC address",
+        "DNS TTL",
+        "Subnet ID"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-w4b4ya",
+      "prompt": "Which algorithm is used by link state protocols to compute shortest paths?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Dijkstra",
+      "distractors": [
+        "Bellman Ford",
+        "Kruskal",
+        "Prim"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-2ktjth",
+      "prompt": "The core recurrence used in Distance Vector is",
+      "kind": "multipleChoice",
+      "correctAnswer": "D(x,y)=min_v{c(x,v)+D(v,y)}",
+      "distractors": [
+        "D(x,y)=max_v{c(x,v)−D(v,y)}",
+        "D(x,y)=Σ_v c(x,v)",
+        "D(x,y)=D(y,x)"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-kilgdn",
+      "prompt": "Count to infinity is a classic convergence problem in Distance Vector routing.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    },
+    {
+      "id": "question-mhbkxyrz-wswubf",
+      "prompt": "Which routing protocol is link state and runs within an AS?",
+      "kind": "multipleChoice",
+      "correctAnswer": "OSPF",
+      "distractors": [
+        "RIP",
+        "BGP",
+        "EIGRP (classic DV)"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-545a21",
+      "prompt": "Which protocol is the de facto inter domain routing protocol on the Internet?",
+      "kind": "multipleChoice",
+      "correctAnswer": "BGP",
+      "distractors": [
+        "OSPF",
+        "RIP",
+        "IS IS"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-iftcht",
+      "prompt": "In BGP, which attribute lists the sequence of ASes a route has traversed?",
+      "kind": "multipleChoice",
+      "correctAnswer": "AS PATH",
+      "distractors": [
+        "LOCAL PREF",
+        "NEXT HOP",
+        "MED"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-z9iglv",
+      "prompt": "Hot potato routing in BGP prefers the route with",
+      "kind": "multipleChoice",
+      "correctAnswer": "Closest exit (lowest IGP cost to NEXT HOP)",
+      "distractors": [
+        "Fewest prefixes",
+        "Longest AS PATH",
+        "Highest MED"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-lykhbr",
+      "prompt": "OSPF areas reduce LS flooding scope and allow route summarization.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    },
+    {
+      "id": "question-mhbkxyrz-r48r77",
+      "prompt": "Which email protocol is used to transfer mail between mail servers?",
+      "kind": "multipleChoice",
+      "correctAnswer": "SMTP",
+      "distractors": [
+        "IMAP",
+        "POP3",
+        "MTA"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-zyohu1",
+      "prompt": "Which protocol is typically used by webmail clients to fetch inbox state?",
+      "kind": "multipleChoice",
+      "correctAnswer": "IMAP",
+      "distractors": [
+        "SMTP",
+        "DHCP",
+        "BGP"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-94lbfh",
+      "prompt": "Which HTTP response header tells the client the media type of the body?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Content Type",
+      "distractors": [
+        "User Agent",
+        "Host",
+        "If Modified Since"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-ya7tjo",
+      "prompt": "Which HTTP method is safe and idempotent and commonly used by CDNs to validate cached objects?",
+      "kind": "multipleChoice",
+      "correctAnswer": "HEAD",
+      "distractors": [
+        "POST",
+        "PATCH",
+        "CONNECT"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-9w9azw",
+      "prompt": "Which DNS record points a name to another name (alias)?",
+      "kind": "multipleChoice",
+      "correctAnswer": "CNAME",
+      "distractors": [
+        "NS",
+        "PTR",
+        "TXT"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-jjysjn",
+      "prompt": "Which IPv4 private address block is valid?",
+      "kind": "multipleChoice",
+      "correctAnswer": "10.0.0.0/8",
+      "distractors": [
+        "11.0.0.0/8",
+        "172.15.0.0/16",
+        "192.0.1.0/24"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-zv6fuk",
+      "prompt": "Given 172.16.8.0/21, what is the size of this block in addresses?",
+      "kind": "multipleChoice",
+      "correctAnswer": "2048",
+      "distractors": [
+        "1024",
+        "4096",
+        "512"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-rs6cfl",
+      "prompt": "Which field in the IPv4 header is decremented at each router?",
+      "kind": "multipleChoice",
+      "correctAnswer": "TTL",
+      "distractors": [
+        "Identification",
+        "Header Checksum is decremented",
+        "Flags"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-9mglze",
+      "prompt": "IPv4 fragmentation can occur at routers, while IPv6 fragmentation is done only at the source.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    },
+    {
+      "id": "question-mhbkxyrz-qhpayg",
+      "prompt": "Which socket call creates a passive TCP socket that awaits connections?",
+      "kind": "multipleChoice",
+      "correctAnswer": "listen()",
+      "distractors": [
+        "connect()",
+        "sendto()",
+        "recvfrom()"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-842ahq",
+      "prompt": "What does demultiplexing do at the transport layer?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Delivers segments to the correct socket using ports",
+      "distractors": [
+        "Splits IP packets across links",
+        "Maps MAC to IP",
+        "Encrypts payloads"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-z73bl1",
+      "prompt": "Which statement best describes encapsulation?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Each layer adds its own header (and trailer if any) as data moves down the stack",
+      "distractors": [
+        "Removing headers as data moves up the stack",
+        "Translating private addresses to public",
+        "Mapping names to addresses"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-vhi227",
+      "prompt": "NAT breaks end to end addressing which can complicate inbound connections and some protocols.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    },
+    {
+      "id": "question-mhbkxyrz-ylufdc",
+      "prompt": "Which ARP message is used to detect duplicate IPs on a LAN?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Gratuitous ARP",
+      "distractors": [
+        "ARP Reply only",
+        "Proxy ARP",
+        "Reverse ARP"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-5r3bzf",
+      "prompt": "Which is a valid IPv6 loopback address?",
+      "kind": "multipleChoice",
+      "correctAnswer": "::1",
+      "distractors": [
+        "::",
+        "fe80::1",
+        "ff02::1"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-ufa9o4",
+      "prompt": "What is the maximum number of equal cost next hops an OSPF router may install for load balancing (typical default)?",
+      "kind": "multipleChoice",
+      "correctAnswer": "4",
+      "distractors": [
+        "1",
+        "16",
+        "2"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-106bc5",
+      "prompt": "Which BGP session type is used between different autonomous systems?",
+      "kind": "multipleChoice",
+      "correctAnswer": "eBGP",
+      "distractors": [
+        "iBGP",
+        "OSPF neighbor",
+        "RIP peer"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-rd8ofl",
+      "prompt": "DNSSEC provides origin authentication and integrity for DNS data.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    },
+    {
+      "id": "question-mhbkxyrz-e2sw8n",
+      "prompt": "Which field in TCP helps the receiver reorder segments that arrive out of order?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Sequence number",
+      "distractors": [
+        "ACK number",
+        "Urgent pointer",
+        "Window scale"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-6j4sig",
+      "prompt": "Which tool uses increasing destination UDP or ICMP probe ports so the final host returns “port unreachable”?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Traceroute",
+      "distractors": [
+        "Ping",
+        "Netstat",
+        "Nslookup"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-hw6vrp",
+      "prompt": "Which HTTP header enables persistent connections by default in HTTP/1.1?",
+      "kind": "multipleChoice",
+      "correctAnswer": "Connection: keep alive",
+      "distractors": [
+        "Cache Control: max age",
+        "Pragma: no cache",
+        "Expect: 100 continue"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-8us7wa",
+      "prompt": "What is the binary mask for /27?",
+      "kind": "multipleChoice",
+      "correctAnswer": "255.255.255.224",
+      "distractors": [
+        "255.255.255.240",
+        "255.255.255.248",
+        "255.255.255.192"
+      ]
+    },
+    {
+      "id": "question-mhbkxyrz-kbmnp4",
+      "prompt": "With CIDR, route aggregation reduces the size of global routing tables.",
+      "kind": "trueFalse",
+      "correctAnswer": "True",
+      "distractors": []
+    }
+  ]
+}

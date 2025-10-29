@@ -5,6 +5,32 @@ const STORAGE_KEY = 'quiz-sets-v2';
 
 const DEFAULT_TYPE = 'flashcard';
 
+const DEFAULT_SET_MODULES = import.meta.glob('../../default sets/*.json', {
+  eager: true,
+  import: 'default'
+});
+
+const DEFAULT_SET_ENTRIES = Object.entries(DEFAULT_SET_MODULES)
+  .map(([path, data]) => {
+    const segments = path.split('/');
+    const fileName = segments[segments.length - 1]?.replace(/\.json$/i, '') ?? 'default-set';
+    const id = fileName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+    const type = data.type === 'practice' ? 'practice' : DEFAULT_TYPE;
+    return [
+      id,
+      {
+        id,
+        title: data.title?.trim() ?? fileName,
+        type,
+        items: sanitizeItems(data.items ?? [], type)
+      }
+    ];
+  })
+  .filter(([, set]) => set.title && set.items.length);
+
 function sanitizeItems(items, type = DEFAULT_TYPE) {
   if (type === 'practice') {
     return items
@@ -52,17 +78,22 @@ function sanitizeItems(items, type = DEFAULT_TYPE) {
     .filter((item) => item.term && item.def);
 }
 
+function buildDefaultSets() {
+  return Object.fromEntries(DEFAULT_SET_ENTRIES);
+}
+
 function loadInitialSets() {
   if (typeof window === 'undefined') {
-    return {};
+    return buildDefaultSets();
   }
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
+    const defaults = buildDefaultSets();
     if (!raw) {
-      return {};
+      return defaults;
     }
     const parsed = JSON.parse(raw);
-    return Object.fromEntries(
+    const stored = Object.fromEntries(
       Object.entries(parsed).map(([id, set]) => {
         const type = set.type === 'practice' ? 'practice' : DEFAULT_TYPE;
         return [
@@ -76,9 +107,13 @@ function loadInitialSets() {
         ];
       })
     );
+    return {
+      ...defaults,
+      ...stored
+    };
   } catch (error) {
     console.warn('Failed to parse stored sets:', error);
-    return {};
+    return buildDefaultSets();
   }
 }
 

@@ -1,0 +1,191 @@
+{
+  "title": "CSC 138 Midterm Flashcards 2",
+  "type": "flashcard",
+  "items": [
+    {
+      "id": "row-mhbn83kb-2on25q",
+      "term": "Define iterative vs recursive DNS resolution and who does the work in each.",
+      "def": "Iterative has the resolver query one server at a time and follow referrals itself; recursive makes one server fetch the final answer on the client’s behalf."
+    },
+    {
+      "id": "row-mhbn83kb-m4vic3",
+      "term": "List the core DNS resource record types and what each maps.",
+      "def": "A maps name to IPv4, AAAA maps name to IPv6, CNAME maps alias to canonical name, MX maps domain to mail exchanger, NS delegates to name servers, PTR maps IP to name, TXT holds arbitrary text, SOA holds zone metadata."
+    },
+    {
+      "id": "row-mhbn83kb-0leqrz",
+      "term": "What sections appear in a DNS message and what do they contain.",
+      "def": "Header with flags and counts; Question with the queried name/type/class; Answer with RRs answering the question; Authority with NS RRs; Additional with helpful glue like A/AAAA for name servers."
+    },
+    {
+      "id": "row-mhbn83kb-tqj2iu",
+      "term": "Explain TTL in DNS and one benefit and one downside.",
+      "def": "TTL is the cache lifetime for a RR; benefit is reduced latency and load; downside is stale answers until TTL expires."
+    },
+    {
+      "id": "row-mhbn83kb-aezqp7",
+      "term": "Show the full HTTP request line structure and give an example.",
+      "def": "Method SP Request-Target SP HTTP-Version CRLF, for example: GET /index.html HTTP/1.1\\r\\n"
+    },
+    {
+      "id": "row-mhbn83kb-yzehqv",
+      "term": "Name three important HTTP request headers and their purposes.",
+      "def": "Host selects virtual site; User-Agent identifies client; Accept and Accept-Encoding negotiate content; Cookie carries client state."
+    },
+    {
+      "id": "row-mhbn83kb-zptybe",
+      "term": "How do cookies provide state over stateless HTTP.",
+      "def": "Server sets a Set-Cookie; client stores and returns it in Cookie on later requests so the server can associate requests with session data."
+    },
+    {
+      "id": "row-mhbn83kb-t12h3u",
+      "term": "Contrast non persistent HTTP with persistent HTTP/1.1.",
+      "def": "Non persistent opens a TCP connection per object; persistent reuses one connection for multiple objects to save RTTs and reduce overhead."
+    },
+    {
+      "id": "row-mhbn83kb-rqqhnw",
+      "term": "What does HTTPS add to HTTP and how is it established.",
+      "def": "It adds confidentiality, integrity, and server authentication via TLS; a TLS handshake negotiates keys and ciphers before HTTP flows."
+    },
+    {
+      "id": "row-mhbn83kb-gijysp",
+      "term": "Name SMTP, IMAP, and POP3 roles in email delivery.",
+      "def": "SMTP transfers mail between servers; IMAP lets clients access and manage mail on the server; POP3 downloads and often removes messages locally."
+    },
+    {
+      "id": "row-mhbn83kb-391bpu",
+      "term": "Why do many webmail UIs still rely on IMAP semantics behind the scenes.",
+      "def": "Because IMAP models server-side folders, flags, and partial fetch, which webmail maps to HTTP requests while keeping mail on the server."
+    },
+    {
+      "id": "row-mhbn83kb-7w8jv1",
+      "term": "Define ARP and when a host sends an ARP request.",
+      "def": "Address Resolution Protocol maps IPv4 to MAC; a host ARPs when it needs the destination or gateway MAC on the local subnet and lacks a cache entry."
+    },
+    {
+      "id": "row-mhbn83kb-v5yx9n",
+      "term": "Describe the DHCP DORA exchange and two common options returned.",
+      "def": "Discover, Offer, Request, Ack; common options include subnet mask, default gateway, and DNS server."
+    },
+    {
+      "id": "row-mhbn83kb-tdbaep",
+      "term": "What is NAT and how does PAT/NAPT work.",
+      "def": "Network Address Translation rewrites addresses; PAT maps many inside hosts to one public IP by assigning unique source ports and tracking a translation table."
+    },
+    {
+      "id": "row-mhbn83kb-b4b0n5",
+      "term": "Name one inbound connectivity challenge with NAT and a common workaround.",
+      "def": "Inbound connections cannot find the internal host; port forwarding or UPnP/NAT-PMP creates explicit mappings as a workaround."
+    },
+    {
+      "id": "row-mhbn83kb-3tb8is",
+      "term": "How many bits are in IPv6 and how is an address written.",
+      "def": "128 bits; eight 16-bit hex groups separated by colons with rules to omit leading zeros and compress one run of zeros with :: ."
+    },
+    {
+      "id": "row-mhbn83kb-c1e2nt",
+      "term": "Give two IPv6 address scopes and their prefixes.",
+      "def": "Link-local fe80::/10 not routed; global unicast 2000::/3 routed on the Internet."
+    },
+    {
+      "id": "row-mhbn83kb-buwr4z",
+      "term": "What replaced ARP and broadcast in IPv6.",
+      "def": "Neighbor Discovery using ICMPv6 messages (NS/NA, RS/RA) and multicast instead of broadcast."
+    },
+    {
+      "id": "row-mhbn83kb-t4x649",
+      "term": "Explain SLAAC at a high level.",
+      "def": "A host learns prefixes and default router from Router Advertisements, forms its own interface identifier, and configures an address autonomously."
+    },
+    {
+      "id": "row-mhbn83kb-1rii84",
+      "term": "Why does IPv6 eliminate in-network fragmentation.",
+      "def": "Routers do not fragment; sources must use Path MTU Discovery and fragment only at the sender with extension headers."
+    },
+    {
+      "id": "row-mhbn83kb-y42z6l",
+      "term": "State the longest prefix match rule and why it matters.",
+      "def": "Routers pick the route with the most specific matching prefix; it ensures traffic follows the most precise route when prefixes overlap."
+    },
+    {
+      "id": "row-mhbn83kb-ugtz0d",
+      "term": "Convert 255.255.255.192 to CIDR and usable hosts.",
+      "def": "/26 with 62 usable hosts per subnet."
+    },
+    {
+      "id": "row-mhbn83kb-5oo16v",
+      "term": "What does ICMP report and name two codes used by traceroute.",
+      "def": "ICMP reports network errors and diagnostics; traceroute relies on Time Exceeded (TTL expired) from routers and Port Unreachable at the destination."
+    },
+    {
+      "id": "row-mhbn83kb-4611q7",
+      "term": "Describe how traceroute discovers each hop.",
+      "def": "It sends probes with increasing TTL/Hop Limit so each router along the path returns an ICMP Time Exceeded, revealing its address in order."
+    },
+    {
+      "id": "row-mhbn83kb-3mxaw0",
+      "term": "List three TCP reliability features.",
+      "def": "Sequence numbers and ACKs, retransmission on loss, and in-order delivery with reassembly at the receiver."
+    },
+    {
+      "id": "row-mhbn83kb-40f8q5",
+      "term": "Name two TCP flow control fields and their roles.",
+      "def": "Window (rwnd) advertises receiver buffer space; ACK number signals next expected byte."
+    },
+    {
+      "id": "row-mhbn83kb-ozstqx",
+      "term": "Briefly define TCP slow start and ssthresh.",
+      "def": "Slow start increases cwnd exponentially each RTT from a small start; ssthresh is the threshold where growth switches to congestion avoidance."
+    },
+    {
+      "id": "row-mhbn83kb-lplqat",
+      "term": "Outline the TCP four-segment close.",
+      "def": "FIN, ACK, FIN, ACK with each side closing its half of the connection."
+    },
+    {
+      "id": "row-mhbn83kb-9784t7",
+      "term": "What is demultiplexing at the transport layer.",
+      "def": "Delivering segments to the correct socket based on the 4-tuple of src/dst IPs and ports."
+    },
+    {
+      "id": "row-mhbn83kb-opjx6q",
+      "term": "Define encapsulation as data moves down the stack.",
+      "def": "Each layer prepends its own header (and link adds a trailer) around the payload from the layer above."
+    },
+    {
+      "id": "row-mhbn83kb-kk1zkh",
+      "term": "Contrast link state and distance vector routing at a glance.",
+      "def": "Link state floods local link metrics and runs Dijkstra; distance vector exchanges distance tables with neighbors and iterates Bellman-Ford updates."
+    },
+    {
+      "id": "row-mhbn83kb-dows8c",
+      "term": "Why do LSAs and areas exist in OSPF.",
+      "def": "LSAs carry topology info; areas limit flooding scope and allow summarization with a backbone area 0 connecting them."
+    },
+    {
+      "id": "row-mhbn83kb-rf8076",
+      "term": "Name four BGP message types.",
+      "def": "OPEN starts a session, UPDATE advertises and withdraws routes, KEEPALIVE maintains it, NOTIFICATION signals errors and closes."
+    },
+    {
+      "id": "row-mhbn83kb-8b91rw",
+      "term": "List three key BGP attributes used in selection.",
+      "def": "LOCAL_PREF for policy preference, AS_PATH for path length and loop prevention, NEXT_HOP for egress point and hot potato decisions."
+    },
+    {
+      "id": "row-mhbn83kb-7t4ab2",
+      "term": "What is route aggregation and give its benefit.",
+      "def": "Combining adjacent prefixes into a shorter summary to reduce routing table size and churn."
+    },
+    {
+      "id": "row-mhbn83kb-nq388v",
+      "term": "Define SNMP’s manager–agent model and a trap.",
+      "def": "A manager polls agents for MIB variables; a trap is an unsolicited notification from an agent about an event."
+    },
+    {
+      "id": "row-mhbn83kb-facr9d",
+      "term": "What is a MIB and an OID in SNMP.",
+      "def": "The MIB is the schema of manageable variables; each variable is identified by an object identifier path in a global tree."
+    }
+  ]
+}

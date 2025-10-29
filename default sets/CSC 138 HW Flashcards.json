@@ -1,0 +1,116 @@
+{
+  "title": "CSC 138 HW Flashcards",
+  "type": "flashcard",
+  "items": [
+    {
+      "id": "row-mhbm378g-7n5z3n",
+      "term": "The slides contrasted circuit switching and packet switching. Why did the designers of the Internet choose packet switching? Think about efficiency, flexibility, and failure recovery. Then, can you name a modern situation where circuit-like guarantees (dedicated bandwidth, predictable timing) might still be useful?",
+      "def": "Packet switching was chosen because it allows the network to share resources among many users, making it more efficient than circuit switching where a dedicated path sits idle if no data is being sent. It is also more flexible, since packets can take different routes if there is congestion or a failure, which improves reliability. Circuit switching, while predictable, doesn’t scale as well for bursty computer traffic. However, circuit-like guarantees are still valuable in cases like real-time voice or video, emergency communications, or certain financial systems where consistent timing and low latency are critical."
+    },
+    {
+      "id": "row-mhbm378g-y7ljp7",
+      "term": "DNS was created in the 1980s to replace a small static hosts file. Imagine the Internet without DNS. How would humans access sites, and how would services manage growth, redundancy, or failures?",
+      "def": "Without DNS, people would have to type raw IP addresses to reach websites, which would make the Internet almost unusable for humans. Services would struggle too, because any time a server moved or more servers were added, everyone would need to update to the new addresses manually. There would be no easy way to manage redundancy, load balancing, or geographic distribution. DNS solved this by separating names from addresses, making the system scalable and flexible."
+    },
+    {
+      "id": "row-mhbm378g-9cmxxt",
+      "term": "The book explains how layering and encapsulation make the Internet feel like a clean stack: type a URL, and the right page appears. Why is this abstraction so powerful, and why can it sometimes be misleading or dangerous? Give an example where ignoring lower-layer realities (like wireless interference, routing delays, or address translation) could cause real issues for an application.",
+      "def": "Layering and encapsulation are powerful because they separate concerns: an application can send data without needing to know how routing, error checking, or physical transmission are handled. This modularity makes the system easier to build and extend. However, the abstraction can hide important limits. For example, a streaming video service may assume steady delivery, but lower-layer issues like wireless interference or routing delays can cause buffering and poor quality. Ignoring those details means the application isn’t prepared to adapt when the lower layers behave unpredictably."
+    },
+    {
+      "id": "row-mhbm378g-hnfu01",
+      "term": "When your laptop first connects to a network, it uses DHCP to obtain an IP address and other configuration details. Why is this step necessary before you can even send a DNS request?",
+      "def": "DHCP is necessary because a computer cannot communicate on the network without basic addressing information. It needs an IP address for itself, a subnet mask to know what’s local, a default gateway to reach the wider Internet, and often the address of a DNS server. Without this information, the computer wouldn’t even know how to format or where to send a DNS request, so DHCP is the step that makes all later communication possible."
+    },
+    {
+      "id": "row-mhbm378g-vu3yux",
+      "term": "The TCP three-way handshake (SYN, SYN-ACK, ACK) seems like “extra steps” before any data flows. Why is this handshake essential, and what might break if it didn’t exist?",
+      "def": "The three-way handshake makes sure both the client and server are ready to communicate and agree on starting sequence numbers. This prevents old or duplicate packets from being mistaken for new data and ensures both sides know the connection state. Without it, data could be lost, arrive out of order, or be confused with leftovers from a previous connection, breaking reliable communication."
+    },
+    {
+      "id": "row-mhbm378g-2mhpma",
+      "term": "Many Internet applications (web, games, messaging, etc.) share the same network but use different protocols. Why do you think so many application-layer protocols exist, instead of one universal protocol?",
+      "def": "Different applications have distinct requirements for reliability, latency, throughput, and security. For instance, video conferencing values low delay over perfect delivery, while file transfer demands guaranteed accuracy. A single universal protocol would struggle to balance these conflicting needs. By designing specialized protocols like HTTP, SMTP, and RTP, developers can optimize behavior for their use cases while still sharing the same underlying transport and network layers."
+    },
+    {
+      "id": "row-mhbm378g-ji3w31",
+      "term": "In the client-server paradigm, the server has a permanent IP and is always on, while clients may have dynamic IPs and intermittent connections. Why is this arrangement so common? Can you think of cases where peer-to-peer makes more sense?",
+      "def": "The client-server model simplifies discovery and reliability: clients always know where to reach the service, and servers can be managed, scaled, and secured centrally. It fits well with web hosting and cloud services that must be available continuously. However, peer-to-peer systems make more sense for file sharing, distributed gaming, or blockchain networks, where participants contribute resources and no single node needs to be permanently online."
+    },
+    {
+      "id": "row-mhbm378g-ylrcmf",
+      "term": "The slides show that sockets are like “doors” between processes and the network. Why is this abstraction useful for developers, and what problems would arise if applications had to manage transport details directly?",
+      "def": "Sockets provide a clean, uniform interface to send and receive data without exposing the complexity of packet handling, retransmissions, or flow control. This allows applications to focus on higher-level logic rather than implementing their own networking stack. Without sockets, developers would have to manage checksums, congestion control, and message ordering themselves—making reliable communication far more error-prone and inconsistent across programs."
+    },
+    {
+      "id": "row-mhbm378g-dmg1n3",
+      "term": "HTTP is called a stateless protocol, meaning the server doesn’t remember previous requests. What are the benefits of statelessness, and what are the trade-offs? Can you think of an example where state is actually required?",
+      "def": "Statelessness simplifies scaling because each request can be handled independently by any server, with no session data to synchronize. It also improves reliability—servers can fail without losing client state. The trade-off is that features requiring continuity, like shopping carts or logins, need extra mechanisms such as cookies or sessions. State becomes necessary when user interactions depend on memory of prior actions or personalized data."
+    },
+    {
+      "id": "row-mhbm378g-uzhe48",
+      "term": "Why does non-persistent HTTP require 2 RTTs per object? How does persistent HTTP (HTTP/1.1) improve on this, and why does that matter in practice?",
+      "def": "Non-persistent HTTP opens a new TCP connection for every object, requiring one RTT to establish the connection and another to request and receive data. Persistent HTTP keeps the connection open for multiple requests, eliminating repeated setup costs. This reduces total latency dramatically when loading pages with many resources like images and scripts, improving both speed and efficiency."
+    },
+    {
+      "id": "row-mhbm378g-r90kl2",
+      "term": "SMTP (for sending e-mail) is described as “client push,” while HTTP is “client pull.” What does that mean, and how does it affect how these protocols are used?",
+      "def": "In SMTP, the sending mail server initiates contact to “push” messages to the recipient’s server, regardless of when the recipient checks email. In contrast, HTTP is “pull” because the client must request content from the server when it wants it. This distinction fits their purposes: SMTP supports asynchronous delivery, while HTTP supports on-demand access to web resources."
+    },
+    {
+      "id": "row-mhbm378g-gnewoh",
+      "term": "UDP offers no reliability, no congestion control, and no guarantee of ordering. Why do some applications still choose UDP over TCP?",
+      "def": "Some applications value timeliness over reliability. For example, real-time voice or video streams can tolerate small data loss but not transmission delays caused by retransmission. UDP’s lightweight, connectionless design also reduces overhead, giving developers finer control over timing and error handling. In these cases, the application layer can handle small losses better than TCP’s built-in reliability would."
+    },
+    {
+      "id": "row-mhbm378g-qvt3cm",
+      "term": "In Java, what is the difference between creating a thread by extending the Thread class and by implementing the Runnable interface? Why might you choose one over the other?",
+      "def": "Extending the Thread class means your class directly represents a thread and cannot extend any other class, since Java supports only single inheritance. Implementing Runnable separates the task from the thread mechanism, allowing the same object to be executed by multiple threads and preserving the ability to extend other classes. Most modern code prefers Runnable (or Callable) for better design flexibility and cleaner separation of concerns."
+    },
+    {
+      "id": "row-mhbm378g-spq7q1",
+      "term": "The slides describe threads as individual units of execution within a process. Why can multiple threads improve both responsiveness and efficiency compared to a single-threaded program?",
+      "def": "Multiple threads allow different parts of a program to execute concurrently. A network server, for example, can continue handling new requests while waiting for I/O operations on other connections. This boosts responsiveness by preventing blocking and can improve efficiency on multicore systems, where threads truly run in parallel. It also leads to smoother user interfaces and faster throughput for I/O-bound tasks."
+    },
+    {
+      "id": "row-mhbm378g-6bvika",
+      "term": "Java thread scheduling allows higher-priority threads to run before lower-priority ones, but also supports yielding and sleeping. Why is it important for programmers not to rely too heavily on thread priority alone?",
+      "def": "Thread priority behavior is not strictly defined across operating systems, so code that depends on specific priority ordering may behave unpredictably on different platforms. Overusing high priority can also starve lower-priority threads, reducing fairness and performance. Instead, developers should use proper synchronization and workload design rather than relying on the scheduler to enforce timing or ordering guarantees."
+    },
+    {
+      "id": "row-mhbm378g-tw7j39",
+      "term": "The slides show that a Java thread can be in states such as new, runnable, blocked, or dead. Why is it important to understand these states when writing network programs?",
+      "def": "Knowing thread states helps developers reason about concurrency, especially when dealing with I/O operations or locks. For instance, a thread waiting on a socket read is blocked and cannot make progress until data arrives. Misunderstanding these transitions can lead to deadlocks, wasted CPU cycles, or servers that appear frozen. Proper handling of blocking and waking behavior is essential for writing efficient and responsive networked systems."
+    },
+    {
+      "id": "row-mhbm378g-ybg724",
+      "term": "In the server/client exercise, you fixed a race condition on a shared counter. Why is controlling access to shared resources critical in threaded network programs? Can you think of another shared resource besides a counter that might need protection?",
+      "def": "When multiple threads modify shared data simultaneously, results can become inconsistent due to interleaving operations. Synchronization ensures that only one thread accesses a resource at a time, preserving correctness. Beyond counters, shared logs, session tables, or user lists also require protection to prevent corruption or data loss in concurrent environments."
+    },
+    {
+      "id": "row-mhbm378g-yhrrco",
+      "term": "Why might using multiple threads improve performance on a multicore machine, but not always improve performance on a single-core machine?",
+      "def": "On multicore systems, threads can truly run in parallel, dividing the workload among CPUs. On a single-core machine, threads must share the same processor, so frequent context switching adds overhead without increasing true concurrency. In that case, excessive threading may even slow programs down due to scheduler and synchronization costs."
+    },
+    {
+      "id": "row-mhbm378g-ts12dk",
+      "term": "In Java, a ServerSocket waits for incoming connections, and accept() returns a Socket object. Why is this design useful for building network servers?",
+      "def": "Separating listening from communication lets one server accept multiple clients without confusion. The ServerSocket acts as a “doorway” for new connections, while each returned Socket represents an active conversation with a specific client. This design simplifies concurrency—servers can handle each connection in its own thread or task without interfering with others."
+    },
+    {
+      "id": "row-mhbm378g-wdbi9s",
+      "term": "Network communication in Java often uses streams (e.g., InputStream, OutputStream) to read and write data. Why is the stream abstraction a good fit for sockets, and what might be a limitation of this approach?",
+      "def": "Streams make network I/O look like reading and writing files, which simplifies programming and hides packet-level details. Data flows sequentially, making it intuitive for developers. However, the abstraction also hides message boundaries, so applications must define their own framing or delimiters to separate logical messages within the byte stream."
+    },
+    {
+      "id": "row-mhbm378g-ei070b",
+      "term": "Many simple network servers handle one request per connection, while more complex servers support persistent connections. Why might persistent connections improve performance, and what new challenges do they introduce?",
+      "def": "Persistent connections avoid the overhead of repeatedly establishing and tearing down TCP sessions, reducing latency and resource use for clients that send multiple requests. However, maintaining many open connections consumes memory and threads, and idle clients can tie up resources. Servers must therefore manage timeouts and load carefully to balance performance with scalability."
+    },
+    {
+      "id": "row-mhbm378g-zmv07a",
+      "term": "TCP is a reliable, stream-oriented protocol. When using Java sockets, what responsibilities does TCP handle for you, and what responsibilities are still left to your program?",
+      "def": "TCP guarantees ordered, reliable delivery of bytes, retransmitting lost packets and handling congestion control automatically. The application, however, must still define message boundaries and higher-level logic such as commands, sessions, or application-specific protocols. In other words, TCP moves bytes safely, but your program must decide what those bytes mean."
+    }
+  ]
+}

@@ -1,0 +1,681 @@
+{
+  "title": "CSC 138 Midterm 1 Term Flashcards",
+  "type": "flashcard",
+  "items": [
+    {
+      "id": "row-mhcb35hu-gyob2t",
+      "term": "2^0",
+      "def": "1"
+    },
+    {
+      "id": "row-mhcb35hu-p44jat",
+      "term": "2^1",
+      "def": "2"
+    },
+    {
+      "id": "row-mhcb35hu-er53y9",
+      "term": "2^2",
+      "def": "4"
+    },
+    {
+      "id": "row-mhcb35hu-9pc2cm",
+      "term": "2^3",
+      "def": "8"
+    },
+    {
+      "id": "row-mhcb35hu-ggzd61",
+      "term": "2^4",
+      "def": "16"
+    },
+    {
+      "id": "row-mhcb35hu-iqdx5e",
+      "term": "2^5",
+      "def": "32"
+    },
+    {
+      "id": "row-mhcb35hu-zzz819",
+      "term": "2^6",
+      "def": "64"
+    },
+    {
+      "id": "row-mhcb35hu-ktv7vz",
+      "term": "2^7",
+      "def": "128"
+    },
+    {
+      "id": "row-mhcb35hu-31x6d6",
+      "term": "2^8",
+      "def": "256"
+    },
+    {
+      "id": "row-mhcb35hu-kmmjod",
+      "term": "2^9",
+      "def": "512"
+    },
+    {
+      "id": "row-mhcb35hu-25rm3j",
+      "term": "2^10",
+      "def": "1024"
+    },
+    {
+      "id": "row-mhcb35hu-orseio",
+      "term": "2^11",
+      "def": "2048"
+    },
+    {
+      "id": "row-mhcb35hu-9boc8w",
+      "term": "2^12",
+      "def": "4096"
+    },
+    {
+      "id": "row-mhcb35hu-qhmmve",
+      "term": "2^13",
+      "def": "8192"
+    },
+    {
+      "id": "row-mhcb35hu-mxeysd",
+      "term": "2^14",
+      "def": "16384"
+    },
+    {
+      "id": "row-mhcb35hu-1jg6tu",
+      "term": "2^15",
+      "def": "32768"
+    },
+    {
+      "id": "row-mhcb35hu-6ew9p0",
+      "term": "2^16",
+      "def": "65536"
+    },
+    {
+      "id": "row-mhcb35hu-035cae",
+      "term": "UDP",
+      "def": "User Datagram Protocol, connectionless transport used for real time media and gaming; pros: low overhead, low latency; cons: no reliability or ordering; example: VoIP, DNS queries"
+    },
+    {
+      "id": "row-mhcb35hu-vo1we1",
+      "term": "TCP",
+      "def": "Transmission Control Protocol, connection oriented reliable byte stream; pros: ordered delivery, congestion and flow control; cons: extra RTT for handshake, head of line blocking; example: HTTPS, IMAP"
+    },
+    {
+      "id": "row-mhcb35hu-g3xvp4",
+      "term": "IP",
+      "def": "Internet Protocol, best effort packet delivery across networks; provides addressing and fragmentation (v4 only), no reliability by itself"
+    },
+    {
+      "id": "row-mhcb35hu-9ylkyk",
+      "term": "IPv4",
+      "def": "Internet Protocol version 4, 32 bit addresses, supports NAT and in router fragmentation; example block: 192.168.1.0/24"
+    },
+    {
+      "id": "row-mhcb35hu-z8nbas",
+      "term": "IPv6",
+      "def": "Internet Protocol version 6, 128 bit addresses, fixed header, no in router fragmentation, uses extension headers; aims to remove need for NAT; example: 2001:db8::1"
+    },
+    {
+      "id": "row-mhcb35hu-vedd3z",
+      "term": "ICMP",
+      "def": "Internet Control Message Protocol, reports network errors and diagnostics; example: Echo Request/Reply for ping, Time Exceeded for traceroute"
+    },
+    {
+      "id": "row-mhcb35hu-8te43t",
+      "term": "ARP",
+      "def": "Address Resolution Protocol, maps IPv4 to MAC on a LAN; broadcasts who has X, target replies with MAC; cache with timeout"
+    },
+    {
+      "id": "row-mhcb35hu-b9f07b",
+      "term": "NDP",
+      "def": "Neighbor Discovery Protocol, IPv6 replacement for ARP and IPv4 Router Discovery; uses ICMPv6 NS, NA, RS, RA and multicast"
+    },
+    {
+      "id": "row-mhcb35hu-d0pz5w",
+      "term": "DHCP",
+      "def": "Dynamic Host Configuration Protocol, auto assigns IP, mask, gateway, DNS; DORA sequence: Discover, Offer, Request, Ack"
+    },
+    {
+      "id": "row-mhcb35hu-39tjja",
+      "term": "NAT",
+      "def": "Network Address Translation, rewrites private to public addresses at edge; conserves IPv4, breaks end to end and some protocols; inbound fixes: port forwarding, UPnP"
+    },
+    {
+      "id": "row-mhcb35hu-khhfs8",
+      "term": "PAT (NAPT)",
+      "def": "Port Address Translation, many to one NAT that multiplexes flows by source ports; most common consumer NAT"
+    },
+    {
+      "id": "row-mhcb35hu-0yqxn9",
+      "term": "CIDR",
+      "def": "Classless Inter Domain Routing, variable length prefixes like /20, enables aggregation and efficient allocation"
+    },
+    {
+      "id": "row-mhcb35hu-me9buo",
+      "term": "LPM",
+      "def": "Longest Prefix Match, router chooses route with most specific matching prefix; critical for overlapping routes"
+    },
+    {
+      "id": "row-mhcb35hu-bx0krz",
+      "term": "MTU",
+      "def": "Maximum Transmission Unit, largest frame payload on a link; PMTUD used to avoid fragmentation"
+    },
+    {
+      "id": "row-mhcb35hu-b3321v",
+      "term": "MSS",
+      "def": "Maximum Segment Size, TCP option limiting payload per segment, typically MTU minus IP and TCP headers"
+    },
+    {
+      "id": "row-mhcb35hu-cnbavb",
+      "term": "TTL (IP)",
+      "def": "Time To Live or Hop Limit, decremented by routers to prevent loops; 0 triggers ICMP Time Exceeded"
+    },
+    {
+      "id": "row-mhcb35hu-jeaaxf",
+      "term": "DSCP",
+      "def": "Differentiated Services Code Point, 6 bit QoS field in IP header for traffic classification"
+    },
+    {
+      "id": "row-mhcb35hu-k2fm6c",
+      "term": "QoS",
+      "def": "Quality of Service, techniques to prioritize traffic, manage delay and loss; e.g., voice priority queues"
+    },
+    {
+      "id": "row-mhcb35hu-wtcjlx",
+      "term": "RTT",
+      "def": "Round Trip Time, time for a packet and its reply; impacts TCP throughput and HTTP latency"
+    },
+    {
+      "id": "row-mhcb35hu-8khw2x",
+      "term": "LAN",
+      "def": "Local Area Network, limited geographic scope, Ethernet and Wi Fi common"
+    },
+    {
+      "id": "row-mhcb35hu-b3uerw",
+      "term": "WAN",
+      "def": "Wide Area Network, connects sites across distances, uses ISP backbones, MPLS, VPNs"
+    },
+    {
+      "id": "row-mhcb35hu-dcvmx7",
+      "term": "ASN",
+      "def": "Autonomous System Number, unique ID for a routing domain used by BGP"
+    },
+    {
+      "id": "row-mhcb35hu-ifcm2m",
+      "term": "IGP",
+      "def": "Interior Gateway Protocol, routing within an AS; examples: OSPF, IS IS, RIP, EIGRP"
+    },
+    {
+      "id": "row-mhcb35hu-3zw6b7",
+      "term": "EGP",
+      "def": "Exterior Gateway Protocol, routing between ASes; example: BGP"
+    },
+    {
+      "id": "row-mhcb35hu-9hnimg",
+      "term": "RIP",
+      "def": "Routing Information Protocol, distance vector, hop count metric, slow convergence; educational and small labs"
+    },
+    {
+      "id": "row-mhcb35hu-afhuq1",
+      "term": "OSPF",
+      "def": "Open Shortest Path First, link state IGP, Dijkstra, areas and LSAs, supports authentication and summarization"
+    },
+    {
+      "id": "row-mhcb35hu-dm0rzj",
+      "term": "IS-IS",
+      "def": "Intermediate System to Intermediate System, link state IGP used by many carriers, TLV based"
+    },
+    {
+      "id": "row-mhcb35hu-bv3igv",
+      "term": "BGP",
+      "def": "Border Gateway Protocol, path vector between ASes over TCP, policy based route selection"
+    },
+    {
+      "id": "row-mhcb35hu-htqc90",
+      "term": "LSA",
+      "def": "Link State Advertisement, OSPF messages that flood topology info inside areas"
+    },
+    {
+      "id": "row-mhcb35hu-bkpkk4",
+      "term": "ABR",
+      "def": "Area Border Router, OSPF router that connects an area to the backbone and performs summarization"
+    },
+    {
+      "id": "row-mhcb35hu-vxaf0h",
+      "term": "ASBR",
+      "def": "Autonomous System Boundary Router, OSPF router that injects external routes from other protocols or BGP"
+    },
+    {
+      "id": "row-mhcb35hu-531djt",
+      "term": "AS_PATH",
+      "def": "BGP attribute listing traversed AS sequence, used for loop prevention and path length preference"
+    },
+    {
+      "id": "row-mhcb35hu-fymj1b",
+      "term": "LOCAL_PREF",
+      "def": "BGP attribute to prefer exit paths within an AS, higher is preferred"
+    },
+    {
+      "id": "row-mhcb35hu-b75mws",
+      "term": "NEXT_HOP",
+      "def": "BGP attribute indicating egress router to reach a prefix, drives hot potato to closest exit"
+    },
+    {
+      "id": "row-mhcb35hu-a2knpt",
+      "term": "MED",
+      "def": "Multi Exit Discriminator, BGP hint for neighboring AS on preferred entry, lower is preferred"
+    },
+    {
+      "id": "row-mhcb35hu-zpjrw6",
+      "term": "Dijkstra",
+      "def": "Shortest path first algorithm for link state routing; complexity about O(n^2) with simple data structures"
+    },
+    {
+      "id": "row-mhcb35hu-1uyr5j",
+      "term": "Bellman-Ford",
+      "def": "Distance vector recurrence D(x,y)=min_v{c(x,v)+D(v,y)}, iterative neighbor exchange"
+    },
+    {
+      "id": "row-mhcb35hu-3ci5gn",
+      "term": "SLAAC",
+      "def": "Stateless Address Autoconfiguration for IPv6, host forms its address from router advertised prefix and interface ID"
+    },
+    {
+      "id": "row-mhcb35hu-iacw6i",
+      "term": "PMTUD",
+      "def": "Path MTU Discovery, sender discovers smallest MTU along path, avoids fragmentation by adjusting packet size"
+    },
+    {
+      "id": "row-mhcb35hu-tfs4nj",
+      "term": "Anycast",
+      "def": "Same IP on many nodes, routing delivers to nearest by topology; used by DNS roots and CDNs"
+    },
+    {
+      "id": "row-mhcb35hu-hvslk5",
+      "term": "Unicast",
+      "def": "One sender to one receiver addressing"
+    },
+    {
+      "id": "row-mhcb35hu-0daujc",
+      "term": "Multicast",
+      "def": "One to many group delivery, IPv4 224.0.0.0/4, IPv6 ff00::/8"
+    },
+    {
+      "id": "row-mhcb35hu-yvnyyl",
+      "term": "Broadcast (IPv4)",
+      "def": "One to all on subnet, not present in IPv6 which uses multicast instead"
+    },
+    {
+      "id": "row-mhcb35hu-jlmx0y",
+      "term": "FQDN",
+      "def": "Fully Qualified Domain Name, absolute domain name ending with root dot, e.g., [www.example.com](http://www.example.com)."
+    },
+    {
+      "id": "row-mhcb35hu-3wlzk0",
+      "term": "TLD",
+      "def": "Top level domain, .com .org .net country codes like .us .uk"
+    },
+    {
+      "id": "row-mhcb35hu-ftj09r",
+      "term": "TTL (DNS)",
+      "def": "Record cache lifetime, balances performance and staleness risk"
+    },
+    {
+      "id": "row-mhcb35hu-zu3wgo",
+      "term": "A",
+      "def": "IPv4 address record, maps name to IPv4"
+    },
+    {
+      "id": "row-mhcb35hu-fj2pvb",
+      "term": "AAAA",
+      "def": "IPv6 address record, maps name to IPv6"
+    },
+    {
+      "id": "row-mhcb35hu-t3bq6e",
+      "term": "CNAME",
+      "def": "Canonical name alias, points name to another name, do not mix with other data"
+    },
+    {
+      "id": "row-mhcb35hu-8sb88g",
+      "term": "NS",
+      "def": "Name server record, delegates a zone to authoritative servers"
+    },
+    {
+      "id": "row-mhcb35hu-ktum70",
+      "term": "MX",
+      "def": "Mail exchanger record, lists mail servers with preference values"
+    },
+    {
+      "id": "row-mhcb35hu-xsi8sk",
+      "term": "PTR",
+      "def": "Pointer record, reverse DNS mapping from IP to name"
+    },
+    {
+      "id": "row-mhcb35hu-14kaze",
+      "term": "SOA",
+      "def": "Start of Authority, zone metadata, primary NS, serial, timers"
+    },
+    {
+      "id": "row-mhcb35hu-2jc0jr",
+      "term": "SRV",
+      "def": "Service locator, host and port for named services, e.g., _sip._tcp.example.com"
+    },
+    {
+      "id": "row-mhcb35hu-k12qjm",
+      "term": "TXT",
+      "def": "Text record, arbitrary text, often SPF or verification tokens"
+    },
+    {
+      "id": "row-mhcb35hu-9gqr07",
+      "term": "DNSKEY",
+      "def": "DNSSEC public key record for a zone"
+    },
+    {
+      "id": "row-mhcb35hu-l193xg",
+      "term": "RRSIG",
+      "def": "DNSSEC signature over RRsets, validated with DNSKEY"
+    },
+    {
+      "id": "row-mhcb35hu-phmddh",
+      "term": "DS",
+      "def": "Delegation Signer, parent zone points to child DNSSEC key hash"
+    },
+    {
+      "id": "row-mhcb35hu-rv8qr6",
+      "term": "NSEC",
+      "def": "DNSSEC next secure, lists next name and existing types, enables authenticated denial"
+    },
+    {
+      "id": "row-mhcb35hu-rl7fkp",
+      "term": "NSEC3",
+      "def": "Hashed variant of NSEC to prevent zone walking"
+    },
+    {
+      "id": "row-mhcb35hu-j6apoz",
+      "term": "QR",
+      "def": "DNS flag, 0 for query, 1 for response"
+    },
+    {
+      "id": "row-mhcb35hu-xlsayi",
+      "term": "AA",
+      "def": "DNS flag, authoritative answer bit set by auth servers"
+    },
+    {
+      "id": "row-mhcb35hu-6tskg5",
+      "term": "TC",
+      "def": "DNS flag, message truncated due to size"
+    },
+    {
+      "id": "row-mhcb35hu-3jq9c8",
+      "term": "RD",
+      "def": "DNS flag, recursion desired by client"
+    },
+    {
+      "id": "row-mhcb35hu-w2j0v9",
+      "term": "RA",
+      "def": "DNS flag, recursion available by server"
+    },
+    {
+      "id": "row-mhcb35hu-l8ac23",
+      "term": "AD",
+      "def": "DNSSEC flag, data authenticated by resolver"
+    },
+    {
+      "id": "row-mhcb35hu-9nhsk0",
+      "term": "CD",
+      "def": "DNSSEC flag, checking disabled by client"
+    },
+    {
+      "id": "row-mhcb35hu-ta57dh",
+      "term": "RCODE NOERROR",
+      "def": "DNS response code, query completed successfully"
+    },
+    {
+      "id": "row-mhcb35hu-lmdw4f",
+      "term": "RCODE NXDOMAIN",
+      "def": "Domain name does not exist"
+    },
+    {
+      "id": "row-mhcb35hu-alj1or",
+      "term": "RCODE SERVFAIL",
+      "def": "Server failure, often due to DNSSEC validation or upstream issues"
+    },
+    {
+      "id": "row-mhcb35hu-d0euwv",
+      "term": "RCODE REFUSED",
+      "def": "Server refused to perform the operation, policy or ACL"
+    },
+    {
+      "id": "row-mhcb35hu-1w1nkq",
+      "term": "HTTP",
+      "def": "Hypertext Transfer Protocol, stateless requests and responses over TCP, methods like GET POST, supports headers for caching and content negotiation"
+    },
+    {
+      "id": "row-mhcb35hu-sui6m3",
+      "term": "HTTPS",
+      "def": "HTTP over TLS, adds confidentiality, integrity, server auth; uses TLS handshake before HTTP"
+    },
+    {
+      "id": "row-mhcb35hu-bakchk",
+      "term": "URL",
+      "def": "Uniform Resource Locator, identifies a resource location and scheme, e.g., [https://example.com/path](https://example.com/path)"
+    },
+    {
+      "id": "row-mhcb35hu-in8ims",
+      "term": "URI",
+      "def": "Uniform Resource Identifier, broader identifier concept, URL is a subset"
+    },
+    {
+      "id": "row-mhcb35hu-7gkmoy",
+      "term": "Host (HTTP)",
+      "def": "Header selecting virtual host on a shared IP, mandatory in HTTP/1.1"
+    },
+    {
+      "id": "row-mhcb35hu-1k99ta",
+      "term": "User-Agent",
+      "def": "HTTP header identifying client software, useful for analytics and workarounds"
+    },
+    {
+      "id": "row-mhcb35hu-a35iw6",
+      "term": "Content-Type",
+      "def": "HTTP header that declares media type of payload, e.g., text/html, application/json"
+    },
+    {
+      "id": "row-mhcb35hu-c0leck",
+      "term": "Cache-Control",
+      "def": "HTTP header controlling caches, e.g., max-age, no-store"
+    },
+    {
+      "id": "row-mhcb35hu-m6fs9u",
+      "term": "Set-Cookie / Cookie",
+      "def": "Headers that create and send session tokens, enable state over stateless HTTP; security flags: Secure, HttpOnly, SameSite"
+    },
+    {
+      "id": "row-mhcb35hu-z66q72",
+      "term": "GET",
+      "def": "HTTP method to retrieve a resource, safe and idempotent"
+    },
+    {
+      "id": "row-mhcb35hu-j18sj1",
+      "term": "POST",
+      "def": "HTTP method to submit data that changes server state, not idempotent"
+    },
+    {
+      "id": "row-mhcb35hu-o9vwud",
+      "term": "HEAD",
+      "def": "HTTP method like GET but headers only, used for cache validation and size checks"
+    },
+    {
+      "id": "row-mhcb35hu-p8tjai",
+      "term": "PUT",
+      "def": "HTTP method to replace a resource at a target URI, idempotent"
+    },
+    {
+      "id": "row-mhcb35hu-vnc9ux",
+      "term": "DELETE",
+      "def": "HTTP method to remove a resource, idempotent by spec"
+    },
+    {
+      "id": "row-mhcb35hu-gm1osp",
+      "term": "Traceroute",
+      "def": "Path discovery tool, sends probes with increasing TTL, routers reply with ICMP Time Exceeded, final host replies Port Unreachable"
+    },
+    {
+      "id": "row-mhcb35hu-dnn8f6",
+      "term": "Ping",
+      "def": "Reachability and RTT tool using ICMP Echo Request and Echo Reply"
+    },
+    {
+      "id": "row-mhcb35hu-2tsw5v",
+      "term": "Encapsulation",
+      "def": "Each layer wraps upper layer data with its own header, link may add trailer; enables modular forwarding"
+    },
+    {
+      "id": "row-mhcb35hu-utcsbc",
+      "term": "Demultiplexing",
+      "def": "Transport delivers segments to correct socket via 4 tuple of addresses and ports"
+    },
+    {
+      "id": "row-mhcb35hu-kh3ttx",
+      "term": "Poisoned reverse",
+      "def": "Distance vector loop mitigation, advertise route to a neighbor as infinite if neighbor is next hop for it"
+    },
+    {
+      "id": "row-mhcb35hu-04r6p9",
+      "term": "Split horizon",
+      "def": "Do not advertise a route back out the interface on which it was learned, reduces loops"
+    },
+    {
+      "id": "row-mhcb35hu-im6mn7",
+      "term": "Private IPv4 10/8",
+      "def": "RFC 1918 private space 10.0.0.0/8, not routed on Internet, used behind NAT"
+    },
+    {
+      "id": "row-mhcb35hu-pwo4sy",
+      "term": "Private IPv4 172.16/12",
+      "def": "RFC 1918 private space 172.16.0.0 to 172.31.255.255"
+    },
+    {
+      "id": "row-mhcb35hu-5x1al2",
+      "term": "Private IPv4 192.168/16",
+      "def": "RFC 1918 private space 192.168.0.0 to 192.168.255.255"
+    },
+    {
+      "id": "row-mhcb35hu-3fs71z",
+      "term": "Loopback IPv4",
+      "def": "127.0.0.0/8, host local testing, 127.0.0.1 common"
+    },
+    {
+      "id": "row-mhcb35hu-qe16ce",
+      "term": "Link local IPv4",
+      "def": "169.254.0.0/16, APIPA when DHCP fails, not routed"
+    },
+    {
+      "id": "row-mhcb35hu-jbymh9",
+      "term": "IPv6 link local",
+      "def": "fe80::/10, auto on every interface, needed for NDP and RA"
+    },
+    {
+      "id": "row-mhcb35hu-g7h4jd",
+      "term": "IPv6 unique local",
+      "def": "fc00::/7, private IPv6 addressing inside sites, not globally routed"
+    },
+    {
+      "id": "row-mhcb35hu-rwean0",
+      "term": "IPv6 global unicast",
+      "def": "2000::/3, Internet routable addresses"
+    },
+    {
+      "id": "row-mhcb35hu-m1ryf6",
+      "term": "IPv6 multicast",
+      "def": "ff00::/8, group communication, e.g., ff02::1 all nodes on link"
+    },
+    {
+      "id": "row-mhcb35hu-6vlyyw",
+      "term": "IPv6 loopback",
+      "def": "::1, equivalent of 127.0.0.1"
+    },
+    {
+      "id": "row-mhcb35hu-wpa7ui",
+      "term": "IPv6 unspecified",
+      "def": "::, used before address assignment, never a destination"
+    },
+    {
+      "id": "row-mhcb35hu-mkiuxa",
+      "term": "Port 53",
+      "def": "DNS service, UDP for queries, TCP for zone transfers and large answers"
+    },
+    {
+      "id": "row-mhcb35hu-kv5ulv",
+      "term": "Port 80",
+      "def": "HTTP cleartext service"
+    },
+    {
+      "id": "row-mhcb35hu-mkhgys",
+      "term": "Port 443",
+      "def": "HTTPS over TLS"
+    },
+    {
+      "id": "row-mhcb35hu-qh2990",
+      "term": "Port 25",
+      "def": "SMTP server to server transfer"
+    },
+    {
+      "id": "row-mhcb35hu-yt0bn4",
+      "term": "Port 587",
+      "def": "Mail submission by clients with auth"
+    },
+    {
+      "id": "row-mhcb35hu-n47leh",
+      "term": "Port 110",
+      "def": "POP3 mailbox retrieval"
+    },
+    {
+      "id": "row-mhcb35hu-0slsln",
+      "term": "Port 143",
+      "def": "IMAP mailbox access"
+    },
+    {
+      "id": "row-mhcb35hu-qfghtc",
+      "term": "Port 993",
+      "def": "IMAPS IMAP over TLS"
+    },
+    {
+      "id": "row-mhcb35hu-ru7pgr",
+      "term": "Port 22",
+      "def": "SSH secure remote shell and tunneling"
+    },
+    {
+      "id": "row-mhcb35hu-9kj8yr",
+      "term": "Port 123",
+      "def": "NTP network time synchronization"
+    },
+    {
+      "id": "row-mhcb35hu-0dyn1v",
+      "term": "Port 67",
+      "def": "DHCP server listen port"
+    },
+    {
+      "id": "row-mhcb35hu-zmodd3",
+      "term": "Port 68",
+      "def": "DHCP client listen port"
+    },
+    {
+      "id": "row-mhcb35hu-ovwgk3",
+      "term": "Socket 4 tuple",
+      "def": "Source IP, source port, destination IP, destination port identify a transport flow"
+    },
+    {
+      "id": "row-mhcb35hu-wb5hw7",
+      "term": "Flow control (TCP)",
+      "def": "Receiver window limits sender to prevent buffer overflow; sender respects advertised rwnd"
+    },
+    {
+      "id": "row-mhcb35hu-6eqan7",
+      "term": "Congestion control (TCP)",
+      "def": "Sender adapts rate using cwnd, slow start, congestion avoidance, fast retransmit and recovery"
+    },
+    {
+      "id": "row-mhcb35hu-dg1ljk",
+      "term": "Hot potato routing",
+      "def": "BGP policy to exit the AS at the closest egress to minimize internal cost, may increase end to end path length for outbound traffic"
+    }
+  ]
+}
