@@ -1,12 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { shuffle } from '../utils/shuffle.js';
 
 export function FlashcardsTab({ items, isActive }) {
   const [queue, setQueue] = useState([]);
   const [flipped, setFlipped] = useState(false);
   const [showTermFirst, setShowTermFirst] = useState(true);
+  const [readAloudEnabled, setReadAloudEnabled] = useState(false);
+  const [speechRate, setSpeechRate] = useState(1);
+  const [voice, setVoice] = useState(null);
+
+  const synthRef = useRef(null);
+  const supportsSpeech =
+    typeof window !== 'undefined' &&
+    'speechSynthesis' in window &&
+    'SpeechSynthesisUtterance' in window;
+
+  const handleCancelSpeech = () => {
+    if (!supportsSpeech) {
+      return;
+    }
+    synthRef.current?.cancel?.();
+  };
 
   const rebuildQueue = () => {
+    handleCancelSpeech();
     setQueue(shuffle(items.map((item) => ({ id: item.id, term: item.term, def: item.def }))));
     setFlipped(false);
   };
@@ -28,11 +45,75 @@ export function FlashcardsTab({ items, isActive }) {
     setFlipped(false);
   }, [showTermFirst]);
 
+  useEffect(() => {
+    if (!supportsSpeech) {
+      return;
+    }
+    synthRef.current = window.speechSynthesis;
+
+    const loadVoices = () => {
+      const available = synthRef.current.getVoices();
+      if (!available.length) {
+        return;
+      }
+      const daniel = available.find((entry) => entry.name?.toLowerCase().includes('daniel'));
+      if (daniel) {
+        setVoice((prev) => (prev?.name === daniel.name ? prev : daniel));
+        return;
+      }
+      setVoice((prev) => prev ?? available[0]);
+    };
+
+    loadVoices();
+    const synth = synthRef.current;
+    if (!synth) {
+      return;
+    }
+    if (synth.addEventListener) {
+      synth.addEventListener('voiceschanged', loadVoices);
+    } else if ('onvoiceschanged' in synth) {
+      synth.onvoiceschanged = loadVoices;
+    }
+
+    return () => {
+      if (!synth) {
+        return;
+      }
+      if (synth.removeEventListener) {
+        synth.removeEventListener('voiceschanged', loadVoices);
+      } else if ('onvoiceschanged' in synth) {
+        synth.onvoiceschanged = null;
+      }
+    };
+  }, [supportsSpeech]);
+
+  useEffect(() => {
+    if (!supportsSpeech || readAloudEnabled) {
+      return;
+    }
+    synthRef.current?.cancel?.();
+  }, [supportsSpeech, readAloudEnabled]);
+
+  const speak = (text) => {
+    if (!supportsSpeech || !text?.trim()) {
+      return;
+    }
+    const utterance = new window.SpeechSynthesisUtterance(text);
+    utterance.rate = speechRate;
+    if (voice) {
+      utterance.voice = voice;
+    }
+    synthRef.current?.cancel();
+    synthRef.current?.speak(utterance);
+  };
+
   const handleFlip = () => {
+    handleCancelSpeech();
     setFlipped((prev) => !prev);
   };
 
   const handleGot = () => {
+    handleCancelSpeech();
     setQueue((prev) => {
       if (!prev.length) {
         return prev;
@@ -44,6 +125,7 @@ export function FlashcardsTab({ items, isActive }) {
   };
 
   const handleKeep = () => {
+    handleCancelSpeech();
     setQueue((prev) => {
       if (prev.length <= 1) {
         return prev;
@@ -67,6 +149,29 @@ export function FlashcardsTab({ items, isActive }) {
       ? current.def
       : current.term
     : '';
+
+  useEffect(() => {
+    if (!supportsSpeech) {
+      return;
+    }
+    if (!isActive) {
+      handleCancelSpeech();
+      return;
+    }
+    if (!readAloudEnabled) {
+      handleCancelSpeech();
+      return;
+    }
+    if (!current) {
+      handleCancelSpeech();
+      return;
+    }
+    const visibleText = flipped ? back : front;
+    if (!visibleText) {
+      return;
+    }
+    speak(visibleText);
+  }, [supportsSpeech, isActive, readAloudEnabled, current, flipped, front, back, speechRate, voice]);
 
   return (
     <section
@@ -120,8 +225,38 @@ export function FlashcardsTab({ items, isActive }) {
                 />
                 Show term first
               </label>
+              <label className="inline" style={{ gap: '6px' }}>
+                <input
+                  type="checkbox"
+                  checked={readAloudEnabled}
+                  onChange={(event) => setReadAloudEnabled(event.target.checked)}
+                  disabled={!supportsSpeech}
+                />
+                Read aloud
+              </label>
               <span className="muted small">{queue.length} left</span>
             </div>
+            {supportsSpeech ? (
+              <div className="inline" style={{ gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
+                <label className="inline" style={{ gap: '6px' }} htmlFor="flashcard-speech-rate">
+                  Speed
+                </label>
+                <input
+                  id="flashcard-speech-rate"
+                  type="range"
+                  min="0.5"
+                  max="1.5"
+                  step="0.1"
+                  value={speechRate}
+                  onChange={(event) => setSpeechRate(Number(event.target.value))}
+                  disabled={!readAloudEnabled}
+                  style={{ flex: '1 1 150px' }}
+                />
+                <span className="muted small">{speechRate.toFixed(1)}×</span>
+              </div>
+            ) : (
+              <p className="muted small">Read aloud is not supported in this browser.</p>
+            )}
             <div className="inline" style={{ gap: '8px' }}>
               <button type="button" className="button secondary" onClick={rebuildQueue}>
                 Shuffle
