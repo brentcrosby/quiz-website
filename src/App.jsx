@@ -245,6 +245,9 @@ export default function App() {
       if (prev.type === nextType) {
         return prev;
       }
+      if (!window.confirm('Switching set type will clear the current items. Continue?')) {
+        return prev;
+      }
       const base = createEmptyDraft(nextType);
       return {
         ...base,
@@ -253,11 +256,6 @@ export default function App() {
       };
     });
     setActiveTab('edit');
-    addToast(
-      nextType === SET_TYPES.PRACTICE
-        ? 'Switched to practice tests mode'
-        : 'Switched to flashcards mode'
-    );
   };
 
   const updatePracticeItem = (index, updater) => {
@@ -592,18 +590,9 @@ export default function App() {
             onImportSet={handleImportSet}
             isActive={activeTab === 'edit'}
           />
-          {draft.type === SET_TYPES.PRACTICE ? (
-            <>
-              <PracticeTestTab items={preparedItems} isActive={activeTab === 'practice-test'} />
-              <PracticeQuickQuizTab items={preparedItems} isActive={activeTab === 'practice-quick'} />
-            </>
-          ) : (
-            <>
-              <MatchTab items={preparedItems} isActive={activeTab === 'match'} />
-              <MultipleChoiceTab items={preparedItems} isActive={activeTab === 'mc'} />
-              <FlashcardsTab items={preparedItems} isActive={activeTab === 'flash'} />
-            </>
-          )}
+          <MatchTab items={practiceItems} isActive={activeTab === 'match'} />
+          <MultipleChoiceTab items={practiceItems} isActive={activeTab === 'mc'} />
+          <FlashcardsTab items={practiceItems} isActive={activeTab === 'flash'} />
         </section>
       </div>
       <Sheet

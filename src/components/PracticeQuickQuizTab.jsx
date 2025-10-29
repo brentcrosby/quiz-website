@@ -74,6 +74,44 @@ export function PracticeQuickQuizTab({ items, isActive }) {
     setMastered(0);
   };
 
+  useEffect(() => {
+    if (!isActive || !currentQuestion) {
+      return;
+    }
+    const handleKeyDown = (event) => {
+      if (event.defaultPrevented || event.isComposing || event.key !== 'Enter') {
+        return;
+      }
+      if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) {
+        return;
+      }
+      const target = event.target;
+      if (target && target.tagName) {
+        const tag = target.tagName.toUpperCase();
+        if (tag === 'TEXTAREA' || tag === 'SELECT') {
+          return;
+        }
+        if (tag === 'INPUT') {
+          const type = target.getAttribute('type');
+          if (type && type !== 'radio') {
+            return;
+          }
+        }
+      }
+      if (feedback) {
+        event.preventDefault();
+        handleContinue();
+        return;
+      }
+      if (selected) {
+        event.preventDefault();
+        handleSubmit();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isActive, currentQuestion, feedback, selected, handleContinue, handleSubmit]);
+
   return (
     <section
       id="tab-practice-quick"
