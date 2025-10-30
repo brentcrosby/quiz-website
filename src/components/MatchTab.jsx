@@ -226,7 +226,7 @@ export function MatchTab({ items, isActive }) {
                   >
                     Reshuffle
                   </button>
-                  <button type="button" className="button ghost" onClick={reset}>
+                  <button type="button" className="button ghost compact" onClick={reset}>
                     Reset
                   </button>
                 </div>

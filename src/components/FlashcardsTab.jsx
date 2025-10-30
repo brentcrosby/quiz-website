@@ -18,6 +18,10 @@ export function FlashcardsTab({ items, isActive }) {
     typeof window !== 'undefined' &&
     'speechSynthesis' in window &&
     'SpeechSynthesisUtterance' in window;
+  const speechProgress = Math.min(
+    100,
+    Math.max(0, ((speechRate - 0.5) / (1.5 - 0.5)) * 100)
+  );
 
   const handleCancelSpeech = () => {
     if (!supportsSpeech) {
@@ -390,7 +394,7 @@ export function FlashcardsTab({ items, isActive }) {
                   value={speechRate}
                   onChange={(event) => setSpeechRate(Number(event.target.value))}
                   disabled={!readAloudEnabled}
-                  style={{ flex: '1 1 150px' }}
+                  style={{ flex: '1 1 150px', '--range-progress': `${speechProgress}%` }}
                 />
                 <span className="muted small">{speechRate.toFixed(1)}×</span>
               </div>
@@ -398,10 +402,10 @@ export function FlashcardsTab({ items, isActive }) {
               <p className="muted small">Read aloud is not supported in this browser.</p>
             )}
             <div className="flash-options__actions">
-              <button type="button" className="button secondary" onClick={rebuildQueue}>
+              <button type="button" className="button secondary compact" onClick={rebuildQueue}>
                 Shuffle
               </button>
-              <button type="button" className="button ghost" onClick={rebuildQueue}>
+              <button type="button" className="button ghost compact" onClick={rebuildQueue}>
                 Reset
               </button>
             </div>

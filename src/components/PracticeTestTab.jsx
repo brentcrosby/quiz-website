@@ -182,7 +182,7 @@ export function PracticeTestTab({ items, isActive }) {
                 <button type="button" className="button" onClick={handleRetake}>
                   Retake Test
                 </button>
-                <button type="button" className="button ghost" onClick={handleReset}>
+                <button type="button" className="button ghost compact" onClick={handleReset}>
                   Clear Answers
                 </button>
               </>

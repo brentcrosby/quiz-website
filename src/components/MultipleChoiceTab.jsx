@@ -196,7 +196,7 @@ export function MultipleChoiceTab({ items, isActive }) {
               <button type="button" className="button" onClick={startQuiz}>
                 Start
               </button>
-              <button type="button" className="button ghost" onClick={handleReset}>
+              <button type="button" className="button ghost compact" onClick={handleReset}>
                 Reset
               </button>
             </div>
@@ -282,4 +282,3 @@ export function MultipleChoiceTab({ items, isActive }) {
     </section>
   );
 }
-

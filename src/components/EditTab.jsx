@@ -162,7 +162,7 @@ export function EditTab({
           <button type="button" className="button secondary" onClick={onAddRow}>
             {isPracticeSet ? 'Add Question' : 'Add Row'}
           </button>
-          <button type="button" className="button ghost" onClick={onShuffleRows}>
+          <button type="button" className="button ghost compact" onClick={onShuffleRows}>
             Shuffle
           </button>
           <button type="button" className="button ghost danger" onClick={onClearRows}>
