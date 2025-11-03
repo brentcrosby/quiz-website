@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Header } from './components/Header.jsx';
 import { SetList } from './components/SetList.jsx';
 import { QuickImport } from './components/QuickImport.jsx';
@@ -57,8 +57,23 @@ const createEmptyDraft = (type = SET_TYPES.FLASHCARD) => ({
   items:
     type === SET_TYPES.PRACTICE
       ? [createEmptyItem(SET_TYPES.PRACTICE)]
-      : [createEmptyItem(), createEmptyItem()]
+      : [createEmptyItem()]
 });
+
+const isEmptyFlashcardDraftItem = (item) => {
+  const term = item.term?.trim() ?? '';
+  const def = item.def?.trim() ?? '';
+  return !term && !def;
+};
+
+const isEmptyPracticeDraftItem = (item) => {
+  const prompt = item.prompt?.trim() ?? '';
+  const correct = item.correctAnswer?.trim() ?? '';
+  const hasDistractors = Array.isArray(item.distractors)
+    ? item.distractors.some((value) => value?.trim())
+    : false;
+  return !prompt && !correct && !hasDistractors;
+};
 
 const cleanItems = (items, type = SET_TYPES.FLASHCARD) => {
   if (type === SET_TYPES.PRACTICE) {
@@ -103,7 +118,8 @@ function draftFromSet(set) {
     return createEmptyDraft();
   }
   const type = set.type === SET_TYPES.PRACTICE ? SET_TYPES.PRACTICE : SET_TYPES.FLASHCARD;
-  const items = set.items.length ? set.items : [createEmptyItem(type)];
+  const sanitizedItems = cleanItems(Array.isArray(set.items) ? set.items : [], type);
+  const items = sanitizedItems.length ? sanitizedItems : [createEmptyItem(type)];
   return {
     id: set.id ?? null,
     type,
@@ -196,11 +212,30 @@ export default function App() {
     [draft.type]
   );
 
+  const hasInitializedDraftRef = useRef(false);
+
   useEffect(() => {
     if (!availableTabs.some((tab) => tab.id === activeTab)) {
       setActiveTab('edit');
     }
   }, [availableTabs, activeTab]);
+
+  useEffect(() => {
+    if (hasInitializedDraftRef.current) {
+      return;
+    }
+    if (!currentId) {
+      hasInitializedDraftRef.current = true;
+      return;
+    }
+    const currentSet = sets[currentId];
+    if (!currentSet) {
+      hasInitializedDraftRef.current = true;
+      return;
+    }
+    setDraft(draftFromSet(currentSet));
+    hasInitializedDraftRef.current = true;
+  }, [currentId, sets]);
 
   useEffect(() => {
     const handleKey = (event) => {
@@ -516,7 +551,7 @@ export default function App() {
       setDraft((prev) => ({
         ...prev,
         items: [
-          ...prev.items,
+          ...prev.items.filter((item) => !isEmptyPracticeDraftItem(item)),
           ...items.map((item) => ({
             id: createId('question'),
             prompt: item.prompt,
@@ -537,7 +572,7 @@ export default function App() {
     setDraft((prev) => ({
       ...prev,
       items: [
-        ...prev.items,
+        ...prev.items.filter((item) => !isEmptyFlashcardDraftItem(item)),
         ...items.map((item) => ({
           id: createId('row'),
           term: item.term,

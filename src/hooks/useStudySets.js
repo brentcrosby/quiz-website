@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createId } from '../utils/id.js';
 
 const STORAGE_KEY = 'quiz-sets-v2';
+const CURRENT_ID_KEY = 'quiz-sets-current-id';
 
 const DEFAULT_TYPE = 'flashcard';
 
@@ -117,9 +118,21 @@ function loadInitialSets() {
   }
 }
 
+function readStoredCurrentId() {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  try {
+    return window.localStorage.getItem(CURRENT_ID_KEY);
+  } catch (error) {
+    console.warn('Failed to read stored current set id:', error);
+    return null;
+  }
+}
+
 export function useStudySets() {
   const [sets, setSets] = useState(loadInitialSets);
-  const [currentId, setCurrentId] = useState(null);
+  const [currentId, setCurrentId] = useState(readStoredCurrentId);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -127,6 +140,27 @@ export function useStudySets() {
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(sets));
   }, [sets]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    try {
+      if (currentId && sets[currentId]) {
+        window.localStorage.setItem(CURRENT_ID_KEY, currentId);
+      } else {
+        window.localStorage.removeItem(CURRENT_ID_KEY);
+      }
+    } catch (error) {
+      console.warn('Failed to persist current set id:', error);
+    }
+  }, [currentId, sets]);
+
+  useEffect(() => {
+    if (currentId && !sets[currentId]) {
+      setCurrentId(null);
+    }
+  }, [sets, currentId]);
 
   const saveSet = useCallback(
     ({ id, title, type = DEFAULT_TYPE, items }) => {
