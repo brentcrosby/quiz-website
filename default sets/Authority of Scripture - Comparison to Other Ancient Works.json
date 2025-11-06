@@ -1,0 +1,23 @@
+{
+  "title": "Comparison to Other Ancient Works",
+  "folder": "Authority of Scripture",
+  "type": "flashcard",
+  "items": [
+    {
+      "term": "Earliest copy gap NT",
+      "def": "About 25-100 years relevant because a shorter gap allows fewer generations of copying and better historical control"
+    },
+    {
+      "term": "Copies in original language NT",
+      "def": "About 5800 Greek manuscripts relevant because a large early sample enables robust cross comparison and variant analysis"
+    },
+    {
+      "term": "Geographic spread NT",
+      "def": "Levant Egypt Asia Minor and Rome by the 2nd century relevant because wide early distribution limits the possibility of a single controlling redaction"
+    },
+    {
+      "term": "Agreement rate NT",
+      "def": "About 99.5 percent relevant because high agreement across independent witnesses increases confidence that the text reflects its originals"
+    }
+  ]
+}

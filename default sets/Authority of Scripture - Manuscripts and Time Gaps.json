@@ -1,0 +1,47 @@
+{
+  "title": "Manuscripts & Time Gaps",
+  "folder": "Authority of Scripture",
+  "type": "flashcard",
+  "items": [
+    {
+      "term": "P52 John fragment",
+      "def": "John 18 papyrus dated ~125 CE about 25-50 years after composition relevant because it places the Gospel of John within living memory and shortens the textual gap used to assess authenticity"
+    },
+    {
+      "term": "P46 Pauline collection",
+      "def": "Papyrus codex dated ~175-225 CE containing Romans 1-2 Corinthians Hebrews Ephesians Galatians Philippians Colossians 1 Thessalonians relevant because it proves an early compiled corpus of Paul that can be cross checked for stability"
+    },
+    {
+      "term": "P66 and P75 early Gospels",
+      "def": "John and Luke papyri dated ~175-250 CE closely aligned with 4th century codices relevant because early agreement across centuries shows stable transmission"
+    },
+    {
+      "term": "Codex Sinaiticus",
+      "def": "Near complete Greek Bible dated ~325 CE relevant because it provides a full textual baseline to compare with earlier papyri and later medieval copies"
+    },
+    {
+      "term": "Codex Vaticanus",
+      "def": "Major Greek codex dated ~350 CE relevant because its close agreement with Sinaiticus and earlier papyri supports a coherent textual tradition"
+    },
+    {
+      "term": "NT textual agreement",
+      "def": "About 99.5 percent agreement with differences mostly spelling or word order relevant because high agreement across thousands of witnesses increases confidence in the reconstructed text"
+    },
+    {
+      "term": "Great Isaiah Scroll 1QIsa a",
+      "def": "Near complete Isaiah dated ~125 BCE relevant because it predates Christianity and matches the medieval Masoretic Text which shows long term OT stability"
+    },
+    {
+      "term": "Masoretic stability",
+      "def": "Qumran Isaiah aligns closely with Masoretic Text 1008 CE relevant because it demonstrates over 1000 years of consistent copying for the Hebrew Bible"
+    },
+    {
+      "term": "Dead Sea Scrolls scope",
+      "def": "Hundreds of biblical manuscripts from 3rd-1st century BCE relevant because they show OT books in circulation well before the NT authors cite them"
+    },
+    {
+      "term": "Classics comparison",
+      "def": "Bible has far more manuscripts and shorter earliest copy gaps than Homer Plato and Caesar relevant because a larger earlier dataset allows stronger textual reconstruction"
+    }
+  ]
+}

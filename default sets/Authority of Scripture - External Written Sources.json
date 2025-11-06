@@ -1,0 +1,47 @@
+{
+  "title": "External Written Sources",
+  "folder": "Authority of Scripture",
+  "type": "flashcard",
+  "items": [
+    {
+      "term": "Josephus Antiquities 18.3.3",
+      "def": "Mentions Jesus condemned by Pilate with followers persisting written ~93 CE relevant because a non Christian Jewish historian confirms Jesus and Pilate"
+    },
+    {
+      "term": "Josephus Antiquities 20.9.1",
+      "def": "Mentions James the brother of Jesus who is called Christ written ~93 CE relevant because it anchors Jesus family and early Jerusalem leadership"
+    },
+    {
+      "term": "Josephus Antiquities 18.5.2",
+      "def": "Describes John the Baptist and execution by Herod Antipas written ~93 CE relevant because it corroborates Gospel reports about John and Herod"
+    },
+    {
+      "term": "Tacitus Annals 15.44",
+      "def": "Reports Christus executed under Pontius Pilate during Tiberius written ~116 CE relevant because a hostile Roman source confirms crucifixion timing and official"
+    },
+    {
+      "term": "Suetonius Claudius 25.4",
+      "def": "Notes Jewish disturbances at Rome instigated by Chrestus written ~120 CE relevant because it aligns with Acts 18 on the Claudian expulsion"
+    },
+    {
+      "term": "Pliny Letters 10.96-97",
+      "def": "Describes Christians who sing to Christ as to a god and bind themselves to moral oaths written ~112 CE relevant because it shows early worship of Jesus and regular assemblies"
+    },
+    {
+      "term": "Babylonian Talmud Sanhedrin 43a",
+      "def": "References Yeshu executed on the eve of Passover compiled 3rd-5th century CE relevant because it is a hostile witness to the execution timing"
+    },
+    {
+      "term": "Lucian Passing of Peregrinus",
+      "def": "Mocks Christians who follow a crucified sage 2nd century CE relevant because it shows outsiders recognized a crucified founder and a distinct community"
+    },
+    {
+      "term": "1 Clement",
+      "def": "Cites Paul and echoes Jesus around 96 CE relevant because it proves early circulation and authority of apostolic teaching within one generation"
+    },
+    {
+      "term": "Ignatius of Antioch",
+      "def": "Affirms death and resurrection under Pilate around 110 CE relevant because it fixes core beliefs early and independently of the later Gospels"
+    }
+  ]
+}

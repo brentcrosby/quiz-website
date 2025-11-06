@@ -8,11 +8,13 @@ import { MultipleChoiceTab } from './components/MultipleChoiceTab.jsx';
 import { FlashcardsTab } from './components/FlashcardsTab.jsx';
 import { PracticeTestTab } from './components/PracticeTestTab.jsx';
 import { PracticeQuickQuizTab } from './components/PracticeQuickQuizTab.jsx';
+import { FolderRunPicker } from './components/FolderRunPicker.jsx';
 import { useTheme } from './context/ThemeContext.jsx';
 import { useToast } from './context/ToastContext.jsx';
 import { useStudySets } from './hooks/useStudySets.js';
 import { createId } from './utils/id.js';
 import { shuffle } from './utils/shuffle.js';
+import { UNSORTED_FOLDER_NAME } from './constants/folders.js';
 
 const SET_TYPES = {
   FLASHCARD: 'flashcard',
@@ -54,6 +56,7 @@ const createEmptyDraft = (type = SET_TYPES.FLASHCARD) => ({
   id: null,
   type,
   title: '',
+  folder: '',
   items:
     type === SET_TYPES.PRACTICE
       ? [createEmptyItem(SET_TYPES.PRACTICE)]
@@ -124,6 +127,7 @@ function draftFromSet(set) {
     id: set.id ?? null,
     type,
     title: set.title ?? '',
+    folder: set.folder ?? '',
     items:
       type === SET_TYPES.PRACTICE
         ? items.map((item) => ({
@@ -189,18 +193,41 @@ function Sheet({ title, description, open, onClose, children }) {
 export default function App() {
   const { toggleTheme } = useTheme();
   const { addToast } = useToast();
-  const { sets, currentId, setCurrentId, saveSet, deleteSet, renameSet } = useStudySets();
+  const {
+    sets,
+    folders,
+    addFolder,
+    setFolderCollapsed,
+    currentId,
+    setCurrentId,
+    saveSet,
+    deleteSet,
+    renameSet
+  } = useStudySets();
 
   const [activeTab, setActiveTab] = useState('edit');
   const [draft, setDraft] = useState(createEmptyDraft);
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [quickAddOpen, setQuickAddOpen] = useState(false);
+  const [folderRunConfig, setFolderRunConfig] = useState(null);
 
   const savedSets = useMemo(
     () =>
       Object.values(sets).sort((a, b) => a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })),
     [sets]
   );
+
+  const setsByFolder = useMemo(() => {
+    const map = new Map();
+    Object.values(sets).forEach((set) => {
+      const folderName = set.folder?.trim() || UNSORTED_FOLDER_NAME;
+      if (!map.has(folderName)) {
+        map.set(folderName, []);
+      }
+      map.get(folderName).push(set);
+    });
+    return map;
+  }, [sets]);
 
   const preparedItems = useMemo(
     () => cleanItems(draft.items, draft.type),
@@ -261,6 +288,94 @@ export default function App() {
     }));
   };
 
+  const handleChangeFolder = (value) => {
+    setDraft((prev) => ({
+      ...prev,
+      folder: value
+    }));
+  };
+
+  const handleCreateFolder = () => {
+    const name = window.prompt('Folder name');
+    if (!name) {
+      return;
+    }
+    const trimmed = name.trim();
+    if (!trimmed) {
+      addToast('Folder name cannot be empty');
+      return;
+    }
+    if (trimmed === UNSORTED_FOLDER_NAME) {
+      addToast('That name is reserved for uncategorized sets');
+      return;
+    }
+    const created = addFolder(trimmed);
+    addToast(created ? 'Folder created' : 'Folder already exists');
+  };
+
+  const handleToggleFolderCollapsed = (folderName) => {
+    const trimmed = folderName?.trim();
+    if (!trimmed) {
+      return;
+    }
+    const current = folders[trimmed]?.collapsed ?? false;
+    setFolderCollapsed(trimmed, !current);
+  };
+
+  const handleRunFolderRequest = (folderName, type) => {
+    const normalizedType = type === SET_TYPES.PRACTICE ? SET_TYPES.PRACTICE : SET_TYPES.FLASHCARD;
+    const targetFolder = folderName?.trim() || UNSORTED_FOLDER_NAME;
+    const folderSets = setsByFolder.get(targetFolder) ?? [];
+    const filtered = folderSets.filter((set) => set.type === normalizedType);
+    if (!filtered.length) {
+      addToast('No sets of that type in this folder');
+      return;
+    }
+    setLibraryOpen(false);
+    setFolderRunConfig({
+      folder: targetFolder,
+      type: normalizedType,
+      sets: filtered
+    });
+  };
+
+  const handleRunFolderSets = (selectedIds) => {
+    if (!folderRunConfig) {
+      return;
+    }
+    const { folder, type } = folderRunConfig;
+    const selectedSets = selectedIds
+      .map((id) => sets[id])
+      .filter((set) => set && set.type === type);
+    if (!selectedSets.length) {
+      addToast('Pick at least one set to run');
+      return;
+    }
+    const combinedItems = selectedSets.flatMap((set) =>
+      cleanItems(set.items, type).map((item) => ({
+        ...item,
+        id: type === SET_TYPES.PRACTICE ? createId('question') : createId('row')
+      }))
+    );
+    if (!combinedItems.length) {
+      addToast('Selected sets have no items to study');
+      return;
+    }
+    setDraft({
+      id: null,
+      type,
+      title: `${folder} • ${type === SET_TYPES.PRACTICE ? 'Practice' : 'Flashcards'}`,
+      folder: folder === UNSORTED_FOLDER_NAME ? '' : folder,
+      items: combinedItems
+    });
+    setCurrentId(null);
+    setFolderRunConfig(null);
+    setActiveTab(type === SET_TYPES.PRACTICE ? 'practice-test' : 'flash');
+    addToast(
+      `Loaded ${selectedSets.length} ${type === SET_TYPES.PRACTICE ? 'practice tests' : 'flashcard sets'}`
+    );
+  };
+
   const handleChangeItem = (index, key, value) => {
     setDraft((prev) => {
       const items = prev.items.slice();
@@ -284,7 +399,8 @@ export default function App() {
       return {
         ...base,
         id: prev.id,
-        title: prev.title
+        title: prev.title,
+        folder: prev.folder
       };
     });
     setActiveTab('edit');
@@ -462,6 +578,7 @@ export default function App() {
       const id = saveSet({
         id: draft.id,
         title: draft.title,
+        folder: draft.folder,
         type: draft.type,
         items: draft.items
       });
@@ -478,6 +595,7 @@ export default function App() {
   const handleExport = () => {
     const set = {
       title: draft.title.trim(),
+      folder: draft.folder?.trim() ?? '',
       type: draft.type,
       items: cleanItems(draft.items, draft.type)
     };
@@ -492,6 +610,7 @@ export default function App() {
       id: null,
       type: data.type,
       title: data.title ?? '',
+      folder: typeof data.folder === 'string' ? data.folder : '',
       items: Array.isArray(data.items) ? data.items : []
     });
     setCurrentId(null);
@@ -607,10 +726,11 @@ export default function App() {
           ))}
         </div>
         <section className="workspace-panels">
-          <EditTab
-            draft={draft}
-            onChangeTitle={handleChangeTitle}
-            onChangeType={handleChangeType}
+        <EditTab
+          draft={draft}
+          onChangeTitle={handleChangeTitle}
+          onChangeFolder={handleChangeFolder}
+          onChangeType={handleChangeType}
             onChangeItem={handleChangeItem}
             onChangePracticePrompt={handleChangePracticePrompt}
             onChangePracticeKind={handleChangePracticeKind}
@@ -649,6 +769,7 @@ export default function App() {
       >
         <SetList
           sets={savedSets}
+          folders={folders}
           currentId={currentId}
           onLoad={(id) => {
             handleLoadSet(id);
@@ -656,6 +777,9 @@ export default function App() {
           }}
           onRename={handleRenameSet}
           onDelete={handleDeleteSet}
+          onCreateFolder={handleCreateFolder}
+          onToggleFolder={handleToggleFolderCollapsed}
+          onRunFolder={handleRunFolderRequest}
         />
       </Sheet>
       <Sheet
@@ -669,6 +793,26 @@ export default function App() {
           onImport={handleQuickImport}
           onAfterImport={() => setQuickAddOpen(false)}
         />
+      </Sheet>
+      <Sheet
+        open={Boolean(folderRunConfig)}
+        onClose={() => setFolderRunConfig(null)}
+        title={folderRunConfig ? `Run Folder: ${folderRunConfig.folder}` : 'Run Folder'}
+        description={
+          folderRunConfig
+            ? folderRunConfig.type === SET_TYPES.PRACTICE
+              ? 'Select which practice tests to include.'
+              : 'Select which flashcard sets to include.'
+            : ''
+        }
+      >
+        {folderRunConfig ? (
+          <FolderRunPicker
+            type={folderRunConfig.type}
+            sets={folderRunConfig.sets}
+            onRun={handleRunFolderSets}
+          />
+        ) : null}
       </Sheet>
     </div>
   );

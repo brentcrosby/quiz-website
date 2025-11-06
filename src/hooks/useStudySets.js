@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { createId } from '../utils/id.js';
+import { UNSORTED_FOLDER_NAME } from '../constants/folders.js';
 
 const STORAGE_KEY = 'quiz-sets-v2';
 const CURRENT_ID_KEY = 'quiz-sets-current-id';
+const FOLDER_STORAGE_KEY = 'quiz-folders-v1';
 
 const DEFAULT_TYPE = 'flashcard';
 
@@ -20,11 +22,13 @@ const DEFAULT_SET_ENTRIES = Object.entries(DEFAULT_SET_MODULES)
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-+|-+$/g, '');
     const type = data.type === 'practice' ? 'practice' : DEFAULT_TYPE;
+    const folder = typeof data.folder === 'string' ? data.folder.trim() : '';
     return [
       id,
       {
         id,
         title: data.title?.trim() ?? fileName,
+        folder,
         type,
         items: sanitizeItems(data.items ?? [], type)
       }
@@ -102,6 +106,7 @@ function loadInitialSets() {
           {
             id,
             title: set.title ?? '',
+            folder: typeof set.folder === 'string' ? set.folder.trim() : '',
             type,
             items: sanitizeItems(set.items ?? [], type)
           }
@@ -115,6 +120,44 @@ function loadInitialSets() {
   } catch (error) {
     console.warn('Failed to parse stored sets:', error);
     return buildDefaultSets();
+  }
+}
+
+const sanitizeFolderName = (folder) => (typeof folder === 'string' ? folder.trim() : '');
+
+function loadInitialFolders() {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+  try {
+    const raw = window.localStorage.getItem(FOLDER_STORAGE_KEY);
+    if (!raw) {
+      return {};
+    }
+    const parsed = JSON.parse(raw);
+    if (!parsed || typeof parsed !== 'object') {
+      return {};
+    }
+    return Object.fromEntries(
+      Object.entries(parsed)
+        .map(([key, meta]) => {
+          const name = sanitizeFolderName(meta?.name ?? key);
+          if (!name) {
+            return null;
+          }
+          return [
+            name,
+            {
+              name,
+              collapsed: Boolean(meta?.collapsed)
+            }
+          ];
+        })
+        .filter(Boolean)
+    );
+  } catch (error) {
+    console.warn('Failed to parse stored folders:', error);
+    return {};
   }
 }
 
@@ -132,6 +175,7 @@ function readStoredCurrentId() {
 
 export function useStudySets() {
   const [sets, setSets] = useState(loadInitialSets);
+  const [folders, setFolders] = useState(loadInitialFolders);
   const [currentId, setCurrentId] = useState(readStoredCurrentId);
 
   useEffect(() => {
@@ -140,6 +184,13 @@ export function useStudySets() {
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(sets));
   }, [sets]);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    window.localStorage.setItem(FOLDER_STORAGE_KEY, JSON.stringify(folders));
+  }, [folders]);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -162,12 +213,86 @@ export function useStudySets() {
     }
   }, [sets, currentId]);
 
+  useEffect(() => {
+    setFolders((prev) => {
+      let changed = false;
+      const next = { ...prev };
+      Object.values(sets).forEach((set) => {
+        const name = sanitizeFolderName(set.folder);
+        if (name && !next[name]) {
+          next[name] = {
+            name,
+            collapsed: false
+          };
+          changed = true;
+        }
+      });
+      return changed ? next : prev;
+    });
+  }, [sets]);
+
+  const ensureFolderExists = useCallback((name) => {
+    const trimmed = sanitizeFolderName(name);
+    if (!trimmed || trimmed === UNSORTED_FOLDER_NAME) {
+      return;
+    }
+    setFolders((prev) => {
+      if (prev[trimmed]) {
+        return prev;
+      }
+      return {
+        ...prev,
+        [trimmed]: {
+          name: trimmed,
+          collapsed: false
+        }
+      };
+    });
+  }, []);
+
+  const addFolder = useCallback((name) => {
+    const trimmed = sanitizeFolderName(name);
+    if (!trimmed || trimmed === UNSORTED_FOLDER_NAME) {
+      return false;
+    }
+    let created = false;
+    setFolders((prev) => {
+      if (prev[trimmed]) {
+        return prev;
+      }
+      created = true;
+      return {
+        ...prev,
+        [trimmed]: {
+          name: trimmed,
+          collapsed: false
+        }
+      };
+    });
+    return created;
+  }, []);
+
+  const setFolderCollapsed = useCallback((name, collapsed) => {
+    const trimmed = sanitizeFolderName(name);
+    if (!trimmed) {
+      return;
+    }
+    setFolders((prev) => ({
+      ...prev,
+      [trimmed]: {
+        name: trimmed,
+        collapsed: Boolean(collapsed)
+      }
+    }));
+  }, []);
+
   const saveSet = useCallback(
-    ({ id, title, type = DEFAULT_TYPE, items }) => {
+    ({ id, title, folder = '', type = DEFAULT_TYPE, items }) => {
       const trimmedTitle = title.trim();
       if (!trimmedTitle) {
         throw new Error('Please enter a set title');
       }
+      const folderName = typeof folder === 'string' ? folder.trim() : '';
       const setType = type === 'practice' ? 'practice' : DEFAULT_TYPE;
       const entries = sanitizeItems(items, setType);
       if (!entries.length) {
@@ -177,12 +302,16 @@ export function useStudySets() {
             : 'Add at least one term with a definition'
         );
       }
+      if (folderName) {
+        ensureFolderExists(folderName);
+      }
       const setId = id ?? currentId ?? createId('set');
       setSets((prev) => ({
         ...prev,
         [setId]: {
           id: setId,
           title: trimmedTitle,
+          folder: folderName,
           type: setType,
           items: entries
         }
@@ -190,7 +319,7 @@ export function useStudySets() {
       setCurrentId(setId);
       return setId;
     },
-    [currentId]
+    [currentId, ensureFolderExists]
   );
 
   const deleteSet = useCallback((id) => {
@@ -226,13 +355,16 @@ export function useStudySets() {
     () => ({
       sets,
       setSets,
+      folders,
+      addFolder,
+      setFolderCollapsed,
       currentId,
       setCurrentId,
       saveSet,
       deleteSet,
       renameSet
     }),
-    [sets, currentId, saveSet, deleteSet, renameSet]
+    [sets, folders, addFolder, setFolderCollapsed, currentId, saveSet, deleteSet, renameSet]
   );
 
   return value;

@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 export function EditTab({
   draft,
   onChangeTitle,
+  onChangeFolder,
   onChangeType,
   onChangeItem,
   onChangePracticePrompt,
@@ -98,6 +99,17 @@ export function EditTab({
             placeholder="e.g., Constitution Clauses"
             value={draft.title}
             onChange={(event) => onChangeTitle(event.target.value)}
+          />
+        </div>
+        <div className="edit-header__field">
+          <label htmlFor="setFolder" className="edit-label">
+            Folder (optional)
+          </label>
+          <input
+            id="setFolder"
+            placeholder="e.g., Civics Unit"
+            value={draft.folder ?? ''}
+            onChange={(event) => onChangeFolder && onChangeFolder(event.target.value)}
           />
         </div>
         <div className="edit-header__field">

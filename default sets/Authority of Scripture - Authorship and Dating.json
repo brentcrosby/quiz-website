@@ -1,0 +1,31 @@
+{
+  "title": "Authorship & Dating",
+  "folder": "Authority of Scripture",
+  "type": "flashcard",
+  "items": [
+    {
+      "term": "Paul undisputed letters",
+      "def": "Romans 1-2 Corinthians Galatians Philippians 1 Thessalonians Philemon dated ~49-60 CE relevant because they are earliest Christian writings and confirm core claims within decades of the events"
+    },
+    {
+      "term": "Paul debated letters",
+      "def": "Ephesians Colossians 2 Thessalonians 1-2 Timothy Titus relevant because stylistic debates map to known ancient practices like use of secretaries while the letters preserve Pauline theology for churches"
+    },
+    {
+      "term": "Gospel of Mark",
+      "def": "Composed ~65-70 CE relevant because it is likely the earliest Gospel and a source for Matthew and Luke which helps establish compositional order"
+    },
+    {
+      "term": "Gospel of Matthew",
+      "def": "Composed ~70-85 CE relevant because it addresses a Jewish audience and explicitly connects events to OT prophecy which reveals early fulfillment interpretation"
+    },
+    {
+      "term": "Luke-Acts",
+      "def": "Composed ~80-90 CE with a researched prologue in Luke 1:1-4 relevant because the two volume work situates the Jesus movement in first century Roman history"
+    },
+    {
+      "term": "Gospel of John",
+      "def": "Composed ~90-95 CE with an eyewitness core indicated in John 21:24 relevant because it offers independent perspective and later theological reflection anchored to an identified witness"
+    }
+  ]
+}
